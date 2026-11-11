@@ -197,22 +197,22 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 
 | ID | Estado | Tarea | Depende | Refs | Hecho cuando |
 | --- | --- | --- | --- | --- | --- |
-| T58 | [ ] | Implementar utilidades de fecha/hora de cliente: formato local, `HH:MM:SS`, rangos y `crypto.randomUUID` para `clientId`. | T2 | FR-TIM-12, BR-07 | Tests de formato y fecha local; no se usa `toISOString()` para días. |
-| T59 | [ ] | Implementar `lib/timer/breakPlan.js`: 18 combinaciones, bloques, resto de segundos y tiempo de reloj. | T58 | FR-TIM-04, BR-02, BR-03 | Tests de las 18 combinaciones, suma exacta y sin descanso final. |
-| T60 | [ ] | Implementar `lib/timer/engine.js` puro: estados, pausa libre, transiciones fijas, saltar descanso, abandonar y completar. | T59 | FR-TIM-02..08 | Tests con reloj falso cubren todos los caminos. |
-| T61 | [ ] | Implementar `TimerContext`: estado, configuración, acumulación por timestamps, snapshot en `localStorage` por usuario cada 5 s. | T60 | FR-TIM-11, NFR-06 | Recargar no pierde estado; el gap cerrado no cuenta. |
-| T62 | [ ] | Implementar recuperación: modal Reanudar/Descartar, plan fijo vencido, snapshot inválido y sesión de otro usuario. | T61 | FR-TIM-11 | Reanudar continúa desde el snapshot; descartar limpia. |
-| T63 | [ ] | Construir configuración: selector de materia, modo libre/fijo y duración; Iniciar deshabilitado sin materia. | T33, T61 | FR-TIM-01..03 | Sin materia no inicia; el modo queda bloqueado al iniciar. |
-| T64 | [ ] | Construir selector de plan de descansos con resumen de bloques y tiempo total. | T59, T63 | FR-TIM-04, FR-TIM-13 | Solo combinaciones válidas; el resumen coincide con el plan. |
-| T65 | [ ] | Construir UI de modo libre: Iniciar, Pausar, Reanudar, Finalizar y confirmación. | T63 | FR-TIM-02, FR-TIM-07 | Pausa no suma; finalizar con <60 s ofrece descartar. |
-| T66 | [ ] | Construir UI de modo fijo: cuenta por bloque, descanso, saltar descanso, abandonar y completar automático. | T64 | FR-TIM-05, FR-TIM-06, FR-TIM-09 | Transiciones automáticas; abandonar guarda efectivo; completar guarda objetivo. |
-| T67 | [ ] | Construir display: tiempo efectivo, tiempo de reloj, fase, bloque actual, progreso y título de pestaña. | T65, T66 | FR-TIM-12, FR-TIM-13 | No se desincroniza al cambiar de pestaña. |
-| T68 | [ ] | Implementar `useSessionSave`: POST, resumen, reintento con mismo `clientId`, refresh si expiró, invalidación de dashboard. | T45, T61 | FR-TIM-08, FR-SES-03, NFR-03 | Guardado exitoso aparece en dashboard; fallo de red reintenta sin duplicar. |
-| T69 | [ ] | Implementar bloqueo de navegación y `beforeunload` mientras haya sesión activa. | T61 | FR-TIM-11 | Salir pide confirmación; recargar ofrece recuperar. |
-| T70 | [ ] | Implementar bloqueo multi-pestaña con `storage`/`BroadcastChannel`. | T61 | FR-TIM-11 | La segunda pestaña no inicia otra sesión. |
-| T71 | [ ] | Implementar señal visual/sonora al cambiar de fase y notificación opcional del navegador. | T66 | FR-TIM-10 | Cambio de bloque avisa; permiso denegado no rompe el flujo. |
-| T72 | [ ] | Tests de componentes y contexto: libre, fijo, abandonar, recuperar, saltar descanso. | T58–T71 | FR-TIM-01..15 | Tests verdes con timers falsos. |
-| T73 | [ ] | **Gate F4:** sesión libre y fija manual; abandonar; recargar; dos pestañas; verificar datos en MySQL. | T58–T72 | — | Tiempo efectivo correcto; sin descansos contabilizados; recuperación OK. |
+| T58 | [x] | Implementar utilidades de fecha/hora de cliente: formato local, `HH:MM:SS`, rangos y `crypto.randomUUID` para `clientId`. | T2 | FR-TIM-12, BR-07 | Tests de formato y fecha local; no se usa `toISOString()` para días. |
+| T59 | [x] | Implementar `lib/timer/breakPlan.js`: 18 combinaciones, bloques, resto de segundos y tiempo de reloj. | T58 | FR-TIM-04, BR-02, BR-03 | Tests de las 18 combinaciones, suma exacta y sin descanso final. |
+| T60 | [x] | Implementar `lib/timer/engine.js` puro: estados, pausa libre, transiciones fijas, saltar descanso, abandonar y completar. | T59 | FR-TIM-02..08 | Tests con reloj falso cubren todos los caminos. |
+| T61 | [x] | Implementar `TimerContext`: estado, configuración, acumulación por timestamps, snapshot en `localStorage` por usuario cada 5 s. | T60 | FR-TIM-11, NFR-06 | Recargar no pierde estado; el gap cerrado no cuenta. |
+| T62 | [x] | Implementar recuperación: modal Reanudar/Descartar, plan fijo vencido, snapshot inválido y sesión de otro usuario. | T61 | FR-TIM-11 | Reanudar continúa desde el snapshot; descartar limpia. |
+| T63 | [x] | Construir configuración: selector de materia, modo libre/fijo y duración; Iniciar deshabilitado sin materia. | T33, T61 | FR-TIM-01..03 | Sin materia no inicia; el modo queda bloqueado al iniciar. |
+| T64 | [x] | Construir selector de plan de descansos con resumen de bloques y tiempo total. | T59, T63 | FR-TIM-04, FR-TIM-13 | Solo combinaciones válidas; el resumen coincide con el plan. |
+| T65 | [x] | Construir UI de modo libre: Iniciar, Pausar, Reanudar, Finalizar y confirmación. | T63 | FR-TIM-02, FR-TIM-07 | Pausa no suma; finalizar con <60 s ofrece descartar. |
+| T66 | [x] | Construir UI de modo fijo: cuenta por bloque, descanso, saltar descanso, abandonar y completar automático. | T64 | FR-TIM-05, FR-TIM-06, FR-TIM-09 | Transiciones automáticas; abandonar guarda efectivo; completar guarda objetivo. |
+| T67 | [x] | Construir display: tiempo efectivo, tiempo de reloj, fase, bloque actual, progreso y título de pestaña. | T65, T66 | FR-TIM-12, FR-TIM-13 | No se desincroniza al cambiar de pestaña. |
+| T68 | [x] | Implementar `useSessionSave`: POST, resumen, reintento con mismo `clientId`, refresh si expiró, invalidación de dashboard. | T45, T61 | FR-TIM-08, FR-SES-03, NFR-03 | Guardado exitoso aparece en dashboard; fallo de red reintenta sin duplicar. |
+| T69 | [x] | Implementar bloqueo de navegación y `beforeunload` mientras haya sesión activa. | T61 | FR-TIM-11 | Salir pide confirmación; recargar ofrece recuperar. |
+| T70 | [x] | Implementar bloqueo multi-pestaña con `storage`/`BroadcastChannel`. | T61 | FR-TIM-11 | La segunda pestaña no inicia otra sesión. |
+| T71 | [x] | Implementar señal visual/sonora al cambiar de fase y notificación opcional del navegador. | T66 | FR-TIM-10 | Cambio de bloque avisa; permiso denegado no rompe el flujo. |
+| T72 | [x] | Tests de componentes y contexto: libre, fijo, abandonar, recuperar, saltar descanso. | T58–T71 | FR-TIM-01..15 | Tests verdes con timers falsos. |
+| T73 | [x] | **Gate F4:** sesión libre y fija manual; abandonar; recargar; dos pestañas; verificar datos en MySQL. | T58–T72 | — | Tiempo efectivo correcto; sin descansos contabilizados; recuperación OK. |
 
 **Definition of Done F4:** temporizador preciso, persistente y guardado idempotente, con UX completa en español.
 

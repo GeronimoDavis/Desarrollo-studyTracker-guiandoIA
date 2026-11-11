@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
+import { RecoveryDialog } from '../timer/RecoveryDialog.jsx';
+import { TimerNavigationGuard } from '../timer/TimerNavigationGuard.jsx';
 import { useAuth } from '../../context/useAuth.js';
+import { useTimer } from '../../context/useTimer.js';
 
 export function AppShell() {
   const { user, logout } = useAuth();
+  const { active: timerActive } = useTimer();
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -21,6 +25,9 @@ export function AppShell() {
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
+      <TimerNavigationGuard />
+      <RecoveryDialog />
+
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
@@ -80,6 +87,24 @@ export function AppShell() {
             }
           >
             Materias
+          </NavLink>
+          <NavLink
+            to="/timer"
+            className={({ isActive }) =>
+              `rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                isActive
+                  ? 'bg-emerald-50 text-emerald-800'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`
+            }
+          >
+            Temporizador
+            {timerActive ? (
+              <span
+                className="ml-2 inline-block h-2 w-2 rounded-full bg-emerald-500"
+                aria-label="Sesión activa"
+              />
+            ) : null}
           </NavLink>
         </div>
       </nav>

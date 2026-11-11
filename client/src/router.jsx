@@ -9,6 +9,7 @@ import { NotFound } from './pages/NotFound.jsx';
 import { Register } from './pages/Register.jsx';
 import { SubjectDetail } from './pages/SubjectDetail.jsx';
 import { Subjects } from './pages/Subjects.jsx';
+import { Timer } from './pages/Timer.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: 'subjects/:id',
         element: <SubjectDetail />
+      },
+      {
+        path: 'timer',
+        element: <Timer />
       }
     ]
   },
