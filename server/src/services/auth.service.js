@@ -262,7 +262,7 @@ export async function changePassword(
 
   if (!passwordMatches) {
     throw new HttpError(
-      400,
+      422,
       'INVALID_CURRENT_PASSWORD',
       'La contraseña actual no es correcta.'
     );

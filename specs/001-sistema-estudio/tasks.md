@@ -249,10 +249,10 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 
 | ID | Estado | Tarea | Depende | Refs | Hecho cuando |
 | --- | --- | --- | --- | --- | --- |
-| T90 | [ ] | Construir página de ajustes: nombre, email de solo lectura, zona horaria y logout. | T16, T74 | FR-SET-01, FR-SET-04 | Cambios persisten; timezone validada. |
-| T91 | [ ] | Construir editor de 4 umbrales del heatmap con validación ascendente y vista previa. | T52, T90 | FR-SET-02 | Guardar recarga el heatmap con los nuevos niveles. |
-| T92 | [ ] | Construir cambio de contraseña con confirmación y cierre de sesión posterior. | T16, T90 | FR-AUTH-08 | Contraseña incorrecta 422; cambio exitoso redirige a login. |
-| T93 | [ ] | Agregar ErrorBoundary, toasts consistentes y mensajes de error de red/reintento. | T74–T92 | NFR-03 | Errores inesperados no rompen la app; mensajes en español. |
+| T90 | [x] | Construir página de ajustes: nombre, email de solo lectura, zona horaria y logout. | T16, T74 | FR-SET-01, FR-SET-04 | Cambios persisten; timezone validada. |
+| T91 | [x] | Construir editor de 4 umbrales del heatmap con validación ascendente y vista previa. | T52, T90 | FR-SET-02 | Guardar recarga el heatmap con los nuevos niveles. |
+| T92 | [x] | Construir cambio de contraseña con confirmación y cierre de sesión posterior. | T16, T90 | FR-AUTH-08 | Contraseña incorrecta 422; cambio exitoso redirige a login. |
+| T93 | [x] | Agregar ErrorBoundary, toasts consistentes y mensajes de error de red/reintento. | T74–T92 | NFR-03 | Errores inesperados no rompen la app; mensajes en español. |
 | T94 | [ ] | Auditoría de seguridad: cookies, SameSite, Secure, rate limit, origen, SQL parametrizado, secretos y logs. | T90–T93 | NFR-02, NFR-06 | Checklist sin hallazgos críticos; secretos fuera del repo. |
 | T95 | [ ] | Prueba de performance con 10 000 sesiones: dashboard < 2 s, API < 300 ms. | T55, T75 | NFR-01 | Tiempos medidos y documentados; índices usados. |
 | T96 | [ ] | Regresión MySQL 8.x: verificar `utf8mb4_0900_ai_ci`, CHECK activos, default JSON, migración y `schema_migrations`. | T3, T57 | NFR-08, D-10 | Base real y migración coinciden; constraints activos. |

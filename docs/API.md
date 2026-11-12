@@ -70,6 +70,10 @@ Respuesta `201`:
 
 Respuesta `204` sin cuerpo.
 
+Si la contraseña actual no es correcta responde `422` con el código
+`INVALID_CURRENT_PASSWORD`. Al completarse, se revocan todos los refresh
+tokens y se borran las cookies de sesión.
+
 ## Materias
 
 | Método | Ruta | Auth | Descripción |
@@ -409,6 +413,7 @@ Respuesta:
 | `UNAUTHENTICATED` | 401 | Falta la cookie de acceso o no es válida. |
 | `TOKEN_EXPIRED` | 401 | El access token expiró. |
 | `INVALID_CREDENTIALS` | 401 | Email o contraseña incorrectos. |
+| `INVALID_CURRENT_PASSWORD` | 422 | La contraseña actual no es correcta. |
 | `EMAIL_IN_USE` | 409 | El email ya está registrado. |
 | `DUPLICATE_NAME` | 409 | Ya existe una materia con ese nombre. |
 | `SUBJECT_ARCHIVED` | 422 | La materia está archivada. |

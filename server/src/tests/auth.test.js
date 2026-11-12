@@ -206,7 +206,7 @@ describe('auth', () => {
       .set('Cookie', accessCookie)
       .send({ currentPassword: 'Incorrecta1!', newPassword });
 
-    expect(wrongCurrent.status).toBe(400);
+    expect(wrongCurrent.status).toBe(422);
     expect(wrongCurrent.body.error.code).toBe('INVALID_CURRENT_PASSWORD');
 
     const changed = await request(app)

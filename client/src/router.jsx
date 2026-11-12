@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell.jsx';
 import { GuestRoute } from './components/layout/GuestRoute.jsx';
 import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
+import { RouteErrorElement } from './components/layout/RouteErrorElement.jsx';
 import { Dashboard } from './pages/Dashboard.jsx';
 import { Login } from './pages/Login.jsx';
 import { NotFound } from './pages/NotFound.jsx';
@@ -20,7 +21,8 @@ export const router = createBrowserRouter([
       <GuestRoute>
         <Login />
       </GuestRoute>
-    )
+    ),
+    errorElement: <RouteErrorElement />
   },
   {
     path: '/register',
@@ -28,7 +30,8 @@ export const router = createBrowserRouter([
       <GuestRoute>
         <Register />
       </GuestRoute>
-    )
+    ),
+    errorElement: <RouteErrorElement />
   },
   {
     path: '/',
@@ -37,6 +40,7 @@ export const router = createBrowserRouter([
         <AppShell />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorElement />,
     children: [
       {
         index: true,
@@ -66,6 +70,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFound />,
+    errorElement: <RouteErrorElement />
   }
 ]);

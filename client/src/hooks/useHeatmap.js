@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { getHeatmap } from '../api/dashboard.js';
-import { SESSION_SAVED_EVENT } from '../lib/events.js';
+import { SESSION_SAVED_EVENT, SETTINGS_UPDATED_EVENT } from '../lib/events.js';
 
 export function useHeatmap(year) {
   const [heatmap, setHeatmap] = useState(null);
@@ -17,10 +17,14 @@ export function useHeatmap(year) {
 
   useEffect(() => {
     const handleSessionSaved = () => reload();
+    const handleSettingsUpdated = () => reload();
+
     window.addEventListener(SESSION_SAVED_EVENT, handleSessionSaved);
+    window.addEventListener(SETTINGS_UPDATED_EVENT, handleSettingsUpdated);
 
     return () => {
       window.removeEventListener(SESSION_SAVED_EVENT, handleSessionSaved);
+      window.removeEventListener(SETTINGS_UPDATED_EVENT, handleSettingsUpdated);
     };
   }, [reload]);
 
