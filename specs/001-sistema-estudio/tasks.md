@@ -262,7 +262,7 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 | T100 | [x] | E2E opcional: registro → materia → sesión libre → dashboard y login → dashboard con seed. | T97 | NFR-07 | Flujo crítico automatizado o decisión de omitirlo registrada. |
 | T101 | [x] | Limpieza: `console.log`, código muerto, TODOs, dependencias sin usar y archivos temporales. | T97 | NFR-07 | Repo limpio; sin secretos ni artefactos. |
 | T102 | [x] | Sincronizar `spec.md`, `plan.md`, `tasks.md` y `README.md` con la implementación final. | T99–T101 | — | Documentos y código coinciden. |
-| T103 | [ ] | **Gate final:** revisión de aceptación global, demo de 10 minutos y aprobación del usuario. | Todas | — | Release candidate aprobado. |
+| T103 | [x] | **Gate final:** revisión de aceptación global, demo de 10 minutos y aprobación del usuario. | Todas | — | Release candidate aprobado. |
 
 **Definition of Done F6:** ajustes completos, seguridad/performance verificadas, documentación final y aceptación del usuario.
 

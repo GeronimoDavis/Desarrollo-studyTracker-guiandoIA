@@ -1,11 +1,11 @@
 # MEMORY.md — Estado del proyecto
 
 ## Estado actual
-- Fases 1 a 6 de `specs/001-sistema-estudio/tasks.md` implementadas y verificadas: auth multiusuario, materias, sesiones, temporizador libre/fijo, dashboard, reportes, heatmap y ajustes (T74–T102 en `[x]`).
+- Fases 1 a 6 de `specs/001-sistema-estudio/tasks.md` completas y aprobadas (T74–T103 en `[x]`): auth multiusuario, materias, sesiones, temporizador libre/fijo, dashboard, reportes, heatmap y ajustes.
 - Backend Express + MySQL 8.0.46 (`study_tracker`, InnoDB, `utf8mb4_0900_ai_ci`) y cliente React 19 + Vite en `http://localhost:5173`; API en `http://localhost:4000`.
 - Verificación actual: 49 tests de server + 78 de client, lint sin warnings, build OK y evidencia en `docs/QA.md`.
-- Gobernanza SDD activa: `docs/constitution.md` (6 principios) + este `MEMORY.md` (estado vivo, ~50 líneas).
-- Pendiente: T103 (gate final con aprobación del usuario).
+- Gobernanza SDD activa: `docs/constitution.md` (6 principios), este `MEMORY.md` (estado vivo, ~50 líneas) y los comandos `/sdd-feature` y `/sdd-implement` en `.opencode/commands/`.
+- MVP `001` cerrado; la próxima funcionalidad arranca con `/sdd-feature` en `specs/002-*`.
 
 ## Decisiones (y por qué)
 - **MySQL 8.x con `utf8mb4_0900_ai_ci`**: activa los `CHECK` constraints (8.0.16+) y mantiene el esquema aprobado.
@@ -23,6 +23,6 @@
 - **Idempotencia y solapamiento**: reintentar con el mismo `clientId` devuelve la sesión existente; sesiones superpuestas devuelven 409 `SESSION_OVERLAP`.
 
 ## Próximos pasos
-1. Cerrar T103: gate final, demo de 10 minutos y aprobación del usuario.
+1. Próxima funcionalidad: `/sdd-feature <idea>` crea `specs/002-*` con spec, plan y tareas; después `/sdd-implement 002-nombre Tn` tarea por tarea.
 2. Definir entorno de despliegue (P-08) y sincronizar `DB.sql` con la base real (P-09).
 3. E2E automatizado opcional: hoy la validación es gate headless + checklist manual en `docs/QA.md`.
