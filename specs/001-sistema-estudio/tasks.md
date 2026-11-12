@@ -222,24 +222,26 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 
 | ID | Estado | Tarea | Depende | Refs | Hecho cuando |
 | --- | --- | --- | --- | --- | --- |
-| T74 | [ ] | Construir `AppShell`: sidebar en escritorio, bottom nav en móvil, header con usuario y logout. | T23, T2 | NFR-04 | Navegación entre dashboard, materias, temporizador, reportes y ajustes. |
-| T75 | [ ] | Crear `api/dashboard.js`, `useDashboard`, `useHeatmap` con carga, error, reintento y recarga al guardar sesión. | T51, T50 | FR-DASH-01..07 | El dashboard refleja una sesión nueva sin recargar. |
-| T76 | [ ] | Construir reporte de hoy: total, cards por materia y detalle de sesiones. | T75 | FR-DASH-01 | Coincide con `/api/stats/daily`; vacío con CTA. |
-| T77 | [ ] | Construir selector semana/mes y navegación de períodos sin permitir futuro. | T75 | FR-DASH-02 | Cambiar período recarga y muestra el rango correcto. |
-| T78 | [ ] | Construir gráfico de barras apiladas por materia y día. | T75, T77 | FR-DASH-03 | Barras con colores, tooltip y total del período. |
-| T79 | [ ] | Construir gráfico de dona por materia con leyenda, tiempo y porcentaje. | T75, T77 | FR-DASH-04 | Dona coincide con el desglose; estado vacío. |
-| T80 | [ ] | Construir tarjetas de día con más/menos estudio. | T75 | FR-DASH-05 | Muestra fecha y horas; sin datos muestra vacío. |
-| T81 | [ ] | Construir tarjeta de racha actual y estado “estudiaste hoy”. | T75 | FR-DASH-06 | Racha viva y rota se muestran correctamente. |
-| T82 | [ ] | Construir heatmap anual: grid 7×~53, niveles, tooltip, días futuros, año bisiesto. | T75 | FR-DASH-07, FR-DASH-08 | 365/366 celdas; tooltip y niveles correctos. |
-| T83 | [ ] | Construir leyenda “Menos → Más” y selector de año del heatmap. | T82 | FR-DASH-07 | Leyenda visible; cambiar año recarga. |
-| T84 | [ ] | Construir página de reportes con tabla diaria por materia, totales y filtro por materia. | T75 | FR-DASH-09, FR-DASH-10 | Tabla coincide con la API; filtro funciona. |
-| T85 | [ ] | Agregar estados de carga, error, reintento y vacío en dashboard y reportes. | T76–T84 | FR-DASH-11 | Sin pantallas en blanco; vacíos con CTA. |
-| T86 | [ ] | Ajustar responsive: gráficos, heatmap con scroll horizontal, cards y navegación móvil. | T74–T85 | FR-DASH-12, NFR-04 | Usable a 360 px; sin overflow no intencional. |
-| T87 | [ ] | Accesibilidad: foco, teclado, contraste, `aria-label` del heatmap y tabla alternativa de gráficos. | T74–T86 | FR-DASH-12, NFR-05 | Auditoría básica sin blockers; tabla accesible disponible. |
-| T88 | [ ] | Tests de datos de gráficos, niveles del heatmap, extremos y estados vacíos. | T76–T87 | FR-DASH-01..12 | Tests verdes. |
-| T89 | [ ] | **Gate F5:** recorrido dashboard → período → reportes; consistencia con API; responsive y a11y. | T74–T88 | — | Criterios aprobados manualmente y con tests. |
+| T74 | [x] | Construir `AppShell`: sidebar en escritorio, bottom nav en móvil, header con usuario y logout. | T23, T2 | NFR-04 | Navegación entre dashboard, materias, temporizador, reportes y ajustes. |
+| T75 | [x] | Crear `api/dashboard.js`, `useDashboard`, `useHeatmap` con carga, error, reintento y recarga al guardar sesión. | T51, T50 | FR-DASH-01..07 | El dashboard refleja una sesión nueva sin recargar. |
+| T76 | [x] | Construir reporte de hoy: total, cards por materia y detalle de sesiones. | T75 | FR-DASH-01 | Coincide con `/api/stats/daily`; vacío con CTA. |
+| T77 | [x] | Construir selector semana/mes y navegación de períodos sin permitir futuro. | T75 | FR-DASH-02 | Cambiar período recarga y muestra el rango correcto. |
+| T78 | [x] | Construir gráfico de barras apiladas por materia y día. | T75, T77 | FR-DASH-03 | Barras con colores, tooltip y total del período. |
+| T79 | [x] | Construir gráfico de dona por materia con leyenda, tiempo y porcentaje. | T75, T77 | FR-DASH-04 | Dona coincide con el desglose; estado vacío. |
+| T80 | [x] | Construir tarjetas de día con más/menos estudio. | T75 | FR-DASH-05 | Muestra fecha y horas; sin datos muestra vacío. |
+| T81 | [x] | Construir tarjeta de racha actual y estado “estudiaste hoy”. | T75 | FR-DASH-06 | Racha viva y rota se muestran correctamente. |
+| T82 | [x] | Construir heatmap anual: grid 7×~53, niveles, tooltip, días futuros, año bisiesto. | T75 | FR-DASH-07, FR-DASH-08 | 365/366 celdas; tooltip y niveles correctos. |
+| T83 | [x] | Construir leyenda “Menos → Más” y selector de año del heatmap. | T82 | FR-DASH-07 | Leyenda visible; cambiar año recarga. |
+| T84 | [x] | Construir página de reportes con tabla diaria por materia, totales y filtro por materia. | T75 | FR-DASH-09, FR-DASH-10 | Tabla coincide con la API; filtro funciona. |
+| T85 | [x] | Agregar estados de carga, error, reintento y vacío en dashboard y reportes. | T76–T84 | FR-DASH-11 | Sin pantallas en blanco; vacíos con CTA. |
+| T86 | [x] | Ajustar responsive: gráficos, heatmap con scroll horizontal, cards y navegación móvil. | T74–T85 | FR-DASH-12, NFR-04 | Usable a 360 px; sin overflow no intencional. |
+| T87 | [x] | Accesibilidad: foco, teclado, contraste, `aria-label` del heatmap y tabla alternativa de gráficos. | T74–T86 | FR-DASH-12, NFR-05 | Auditoría básica sin blockers; tabla accesible disponible. |
+| T88 | [x] | Tests de datos de gráficos, niveles del heatmap, extremos y estados vacíos. | T76–T87 | FR-DASH-01..12 | Tests verdes. |
+| T89 | [x] | **Gate F5:** recorrido dashboard → período → reportes; consistencia con API; responsive y a11y. | T74–T88 | — | Criterios aprobados manualmente y con tests. |
 
 **Definition of Done F5:** dashboard y reportes completos, consistentes, responsive y accesibles.
+
+**Nota de implementación:** los gráficos de barras y dona se resuelven con SVG/CSS propios, sin agregar Recharts, para mantener el bundle liviano. Cada gráfico incluye una tabla accesible como alternativa textual.
 
 ---
 

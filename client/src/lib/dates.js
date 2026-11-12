@@ -24,6 +24,37 @@ export function isSameLocalDay(left, right) {
   return toLocalDateKey(left) === toLocalDateKey(right);
 }
 
+export function addDaysToDateKey(dateKey, amount) {
+  const date = new Date(`${dateKey}T00:00:00.000Z`);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  date.setUTCDate(date.getUTCDate() + amount);
+
+  return [
+    date.getUTCFullYear(),
+    pad(date.getUTCMonth() + 1),
+    pad(date.getUTCDate())
+  ].join('-');
+}
+
+export function getDateKeyYear(dateKey) {
+  const year = Number(String(dateKey ?? '').slice(0, 4));
+  return Number.isInteger(year) && year > 0 ? year : null;
+}
+
+export function getMondayIndex(dateKey) {
+  const date = new Date(`${dateKey}T00:00:00.000Z`);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return (date.getUTCDay() + 6) % 7;
+}
+
 export function formatLocalDate(value, options = {}) {
   const date = toDate(value);
 

@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { RecoveryDialog } from '../timer/RecoveryDialog.jsx';
 import { TimerNavigationGuard } from '../timer/TimerNavigationGuard.jsx';
 import { useAuth } from '../../context/useAuth.js';
 import { useTimer } from '../../context/useTimer.js';
+import { BottomNav } from './BottomNav.jsx';
+import { Sidebar } from './Sidebar.jsx';
 
 export function AppShell() {
   const { user, logout } = useAuth();
@@ -24,100 +26,61 @@ export function AppShell() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
+    <div className="min-h-screen bg-slate-50 lg:flex">
       <TimerNavigationGuard />
       <RecoveryDialog />
+      <Sidebar timerActive={timerActive} />
 
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-sm font-bold text-white">
-              SE
+      <div className="flex min-h-screen w-full flex-col lg:min-w-0 lg:flex-1">
+        <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-3 lg:hidden">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-xs font-bold text-white">
+                SE
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  Tracker
+                </p>
+                <p className="text-sm font-semibold leading-tight text-slate-900">
+                  Seguimiento de Estudio
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-                Tracker
+
+            <div className="hidden lg:block">
+              <p className="text-sm font-medium text-slate-500">
+                Tu espacio de estudio
               </p>
-              <h1 className="text-lg font-semibold text-slate-900">
-                Seguimiento de Estudio
-              </h1>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-medium text-slate-900">{user?.name}</p>
+                <p className="text-xs text-slate-500">{user?.email}</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={loggingOut}
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loggingOut ? 'Saliendo…' : 'Cerrar sesión'}
+              </button>
             </div>
           </div>
+        </header>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden text-right sm:block">
-              <p className="text-sm font-medium text-slate-900">{user?.name}</p>
-              <p className="text-xs text-slate-500">{user?.email}</p>
-            </div>
-            <button
-              type="button"
-              onClick={handleLogout}
-              disabled={loggingOut}
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loggingOut ? 'Saliendo…' : 'Cerrar sesión'}
-            </button>
-          </div>
-        </div>
-      </header>
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-8 lg:pt-8">
+          <Outlet />
+        </main>
 
-      <nav className="border-t border-slate-100 bg-white">
-        <div className="mx-auto flex w-full max-w-5xl gap-1 px-4 py-2 sm:px-6">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                isActive
-                  ? 'bg-emerald-50 text-emerald-800'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              }`
-            }
-          >
-            Inicio
-          </NavLink>
-          <NavLink
-            to="/subjects"
-            className={({ isActive }) =>
-              `rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                isActive
-                  ? 'bg-emerald-50 text-emerald-800'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              }`
-            }
-          >
-            Materias
-          </NavLink>
-          <NavLink
-            to="/timer"
-            className={({ isActive }) =>
-              `rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                isActive
-                  ? 'bg-emerald-50 text-emerald-800'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              }`
-            }
-          >
-            Temporizador
-            {timerActive ? (
-              <span
-                className="ml-2 inline-block h-2 w-2 rounded-full bg-emerald-500"
-                aria-label="Sesión activa"
-              />
-            ) : null}
-          </NavLink>
-        </div>
-      </nav>
-
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
-        <Outlet />
-      </main>
-
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto w-full max-w-5xl px-4 py-4 text-sm text-slate-500 sm:px-6">
+        <footer className="hidden border-t border-slate-200 bg-white px-6 py-4 text-sm text-slate-500 lg:block lg:px-8">
           {user ? `Sesión de ${user.name}` : 'Seguimiento de Estudio'}
-        </div>
-      </footer>
+        </footer>
+      </div>
+
+      <BottomNav timerActive={timerActive} />
     </div>
   );
 }

@@ -38,3 +38,32 @@ export function formatDateTime(isoDate) {
     timeStyle: 'short'
   }).format(new Date(isoDate));
 }
+
+export function formatTimeInZone(isoDate, timeZone) {
+  if (!isoDate) {
+    return '—';
+  }
+
+  return new Intl.DateTimeFormat('es-AR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone
+  }).format(new Date(isoDate));
+}
+
+export function formatDayTick(dateKey, period) {
+  if (!dateKey) {
+    return '';
+  }
+
+  const options =
+    period === 'month'
+      ? { day: 'numeric' }
+      : { weekday: 'short', day: 'numeric' };
+
+  return new Intl.DateTimeFormat('es-AR', {
+    ...options,
+    timeZone: 'UTC'
+  }).format(new Date(`${dateKey}T00:00:00.000Z`));
+}

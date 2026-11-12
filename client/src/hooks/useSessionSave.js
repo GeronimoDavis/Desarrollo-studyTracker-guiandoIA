@@ -1,8 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { createSession } from '../api/sessions.js';
-
-export const SESSION_SAVED_EVENT = 'study-tracker:session-saved';
+import { SESSION_SAVED_EVENT } from '../lib/events.js';
 
 export function useSessionSave() {
   const [saving, setSaving] = useState(false);

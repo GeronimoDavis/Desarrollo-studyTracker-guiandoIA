@@ -97,7 +97,7 @@ El script elimina las sesiones y materias previas de ese usuario antes de sembra
 
 ## Estado
 
-Fases 1–4 completadas: autenticación multiusuario, materias, sesiones, reportes diarios/periódicos, extremos, racha, heatmap anual y temporizador libre/fijo con recuperación, bloqueo multi-pestaña y guardado idempotente. La siguiente fase es el dashboard y los reportes en pantalla.
+Fases 1–5 completadas: autenticación multiusuario, materias, sesiones, temporizador libre/fijo con recuperación, bloqueo multi-pestaña y guardado idempotente, dashboard diario, reportes por semana/mes, extremos, racha y heatmap anual responsive. La siguiente fase es ajustes, pulido y QA.
 
 ## Documentación
 
