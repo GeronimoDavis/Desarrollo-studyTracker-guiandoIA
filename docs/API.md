@@ -336,14 +336,14 @@ Reglas:
     "startDate": "2026-01-01",
     "endDate": "2026-12-31",
     "thresholds": [60, 120, 240, 480],
-    "totalSeconds": 54060,
-    "totalMinutes": 901,
+    "totalSeconds": 54600,
+    "totalMinutes": 910,
     "activeDays": 5,
     "days": [
       {
         "date": "2026-01-01",
-        "effectiveSeconds": 60,
-        "effectiveMinutes": 1,
+        "effectiveSeconds": 3600,
+        "effectiveMinutes": 60,
         "level": 1,
         "isFuture": false
       }
@@ -352,13 +352,13 @@ Reglas:
 }
 ```
 
-Niveles:
+Niveles (cinco bandas a partir de cuatro umbrales ascendentes en minutos):
 
-- `0`: sin actividad.
-- `1`: al menos 1 minuto y menos que el primer umbral.
-- `2`: desde el primer umbral y menos que el segundo.
-- `3`: desde el segundo umbral y menos que el tercero.
-- `4`: desde el tercer umbral.
+- `0`: sin actividad, o menos que el primer umbral.
+- `1`: desde el primer umbral y menos que el segundo.
+- `2`: desde el segundo umbral y menos que el tercero.
+- `3`: desde el tercer umbral y menos que el cuarto.
+- `4`: desde el cuarto umbral.
 
 Los días futuros tienen `level: null` y `isFuture: true`.
 

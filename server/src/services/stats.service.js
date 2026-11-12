@@ -196,6 +196,8 @@ async function buildStreak(user, { date } = {}) {
   };
 }
 
+// Cinco bandas a partir de cuatro umbrales ascendentes en minutos:
+// [0, t1) → 0 · [t1, t2) → 1 · [t2, t3) → 2 · [t3, t4) → 3 · [t4, ∞) → 4
 function getHeatmapLevel(effectiveSeconds, thresholds) {
   if (effectiveSeconds <= 0) {
     return 0;
@@ -204,14 +206,18 @@ function getHeatmapLevel(effectiveSeconds, thresholds) {
   const minutes = effectiveSeconds / 60;
 
   if (minutes < thresholds[0]) {
-    return 1;
+    return 0;
   }
 
   if (minutes < thresholds[1]) {
-    return 2;
+    return 1;
   }
 
   if (minutes < thresholds[2]) {
+    return 2;
+  }
+
+  if (minutes < thresholds[3]) {
     return 3;
   }
 

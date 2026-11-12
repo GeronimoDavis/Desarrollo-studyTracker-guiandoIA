@@ -190,6 +190,8 @@ seguridad, performance y regresión MySQL documentadas en
 
 ## Documentación
 
+- [`docs/constitution.md`](docs/constitution.md) — principios innegociables del proyecto.
+- [`MEMORY.md`](MEMORY.md) — estado real del proyecto, decisiones y próximos pasos.
 - [`docs/API.md`](docs/API.md) — referencia de la API.
 - [`docs/QA.md`](docs/QA.md) — auditorías de seguridad, performance y regresión MySQL.
 - [`specs/001-sistema-estudio/spec.md`](specs/001-sistema-estudio/spec.md) — requisitos.

@@ -263,23 +263,23 @@ describe('stats', () => {
 
     await insertSession(userId, subject.id, {
       sessionDate: '2024-01-01',
-      effectiveSeconds: 60
-    });
-    await insertSession(userId, subject.id, {
-      sessionDate: '2024-01-02',
       effectiveSeconds: 3600
     });
     await insertSession(userId, subject.id, {
-      sessionDate: '2024-01-03',
+      sessionDate: '2024-01-02',
       effectiveSeconds: 7200
     });
     await insertSession(userId, subject.id, {
-      sessionDate: '2024-01-04',
+      sessionDate: '2024-01-03',
       effectiveSeconds: 14400
     });
     await insertSession(userId, subject.id, {
-      sessionDate: '2024-01-05',
+      sessionDate: '2024-01-04',
       effectiveSeconds: 28800
+    });
+    await insertSession(userId, subject.id, {
+      sessionDate: '2024-01-05',
+      effectiveSeconds: 600
     });
 
     const response = await get(
@@ -292,8 +292,8 @@ describe('stats', () => {
       startDate: '2024-01-01',
       endDate: '2024-12-31',
       thresholds: [60, 120, 240, 480],
-      totalSeconds: 54060,
-      totalMinutes: 901,
+      totalSeconds: 54600,
+      totalMinutes: 910,
       activeDays: 5
     });
     expect(response.body.data.days).toHaveLength(366);
@@ -302,24 +302,24 @@ describe('stats', () => {
       response.body.data.days.map((day) => [day.date, day])
     );
     expect(byDate.get('2024-01-01')).toMatchObject({
-      effectiveSeconds: 60,
+      effectiveSeconds: 3600,
       level: 1
     });
     expect(byDate.get('2024-01-02')).toMatchObject({
-      effectiveSeconds: 3600,
+      effectiveSeconds: 7200,
       level: 2
     });
     expect(byDate.get('2024-01-03')).toMatchObject({
-      effectiveSeconds: 7200,
+      effectiveSeconds: 14400,
       level: 3
     });
     expect(byDate.get('2024-01-04')).toMatchObject({
-      effectiveSeconds: 14400,
+      effectiveSeconds: 28800,
       level: 4
     });
     expect(byDate.get('2024-01-05')).toMatchObject({
-      effectiveSeconds: 28800,
-      level: 4
+      effectiveSeconds: 600,
+      level: 0
     });
     expect(byDate.get('2024-01-06')).toMatchObject({
       effectiveSeconds: 0,
@@ -353,7 +353,7 @@ describe('stats', () => {
 
     await insertSession(userId, subject.id, {
       sessionDate: '2024-02-01',
-      effectiveSeconds: 60
+      effectiveSeconds: 1800
     });
     await insertSession(userId, subject.id, {
       sessionDate: '2024-02-02',
@@ -378,8 +378,8 @@ describe('stats', () => {
 
     expect(response.body.data.thresholds).toEqual([30, 60, 120, 240]);
     expect(byDate.get('2024-02-01').level).toBe(1);
-    expect(byDate.get('2024-02-02').level).toBe(3);
-    expect(byDate.get('2024-02-03').level).toBe(4);
+    expect(byDate.get('2024-02-02').level).toBe(2);
+    expect(byDate.get('2024-02-03').level).toBe(3);
     expect(byDate.get('2024-02-04').level).toBe(4);
   });
 

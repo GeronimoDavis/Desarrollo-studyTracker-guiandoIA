@@ -1,0 +1,28 @@
+# MEMORY.md — Estado del proyecto
+
+## Estado actual
+- Fases 1 a 6 de `specs/001-sistema-estudio/tasks.md` implementadas y verificadas: auth multiusuario, materias, sesiones, temporizador libre/fijo, dashboard, reportes, heatmap y ajustes (T74–T102 en `[x]`).
+- Backend Express + MySQL 8.0.46 (`study_tracker`, InnoDB, `utf8mb4_0900_ai_ci`) y cliente React 19 + Vite en `http://localhost:5173`; API en `http://localhost:4000`.
+- Verificación actual: 49 tests de server + 78 de client, lint sin warnings, build OK y evidencia en `docs/QA.md`.
+- Gobernanza SDD activa: `docs/constitution.md` (6 principios) + este `MEMORY.md` (estado vivo, ~50 líneas).
+- Pendiente: T103 (gate final con aprobación del usuario).
+
+## Decisiones (y por qué)
+- **MySQL 8.x con `utf8mb4_0900_ai_ci`**: activa los `CHECK` constraints (8.0.16+) y mantiene el esquema aprobado.
+- **Tiempo efectivo ≠ tiempo de reloj**: en modo fijo los descansos no suman efectivo; en modo libre las pausas tampoco. La base guarda segundos.
+- **Abandonos**: una sesión fija abandonada se guarda como `abandoned` con el efectivo real; la racha sólo cuenta `completed`.
+- **`session_date` la deriva el backend** desde `startedAt` + `users.timezone`; el cliente nunca la envía.
+- **Sin librería de charts**: barras, dona y heatmap en SVG/CSS propios para no sumar peso al bundle.
+- **Heatmap con cinco bandas y cuatro umbrales**: 0 sin actividad o bajo el primer umbral, 4 desde el cuarto.
+
+## Aprendizajes y errores a evitar
+- **Cotejaciones viejas (XAMPP / MySQL 5.x)**: `utf8mb4_0900_ai_ci` no existe y los `CHECK` no se aplican; usar MySQL 8.0.16+.
+- **Día local**: nunca derivar la fecha con `toISOString()`; usar `client/src/lib/dates.js` y la zona IANA del usuario.
+- **Vite con instancias duplicadas**: dos servidores (5173/5174) sirvieron módulos viejos y la UI mostró errores; usar siempre `http://localhost:5173` y reiniciar Vite tras cambios grandes.
+- **Límite de registro (5/h por IP)**: en desarrollo, reiniciar la API limpia el contador en memoria.
+- **Idempotencia y solapamiento**: reintentar con el mismo `clientId` devuelve la sesión existente; sesiones superpuestas devuelven 409 `SESSION_OVERLAP`.
+
+## Próximos pasos
+1. Cerrar T103: gate final, demo de 10 minutos y aprobación del usuario.
+2. Definir entorno de despliegue (P-08) y sincronizar `DB.sql` con la base real (P-09).
+3. E2E automatizado opcional: hoy la validación es gate headless + checklist manual en `docs/QA.md`.

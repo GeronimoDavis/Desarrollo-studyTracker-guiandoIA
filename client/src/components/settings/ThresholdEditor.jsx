@@ -77,8 +77,9 @@ export function ThresholdEditor({ thresholds, onSave, saving, error }) {
         </div>
 
         <p className="text-sm text-slate-500">
-          Deben estar en orden ascendente. El color más intenso se aplica desde
-          el tercer umbral; el cuarto valor queda como límite máximo configurado.
+          Deben estar en orden ascendente. Los cuatro umbrales definen las
+          cinco bandas de color: los días con menos del primer umbral se ven
+          como un día sin actividad.
         </p>
 
         {validation.message ? (

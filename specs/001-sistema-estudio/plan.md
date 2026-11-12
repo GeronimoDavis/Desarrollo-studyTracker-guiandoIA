@@ -902,7 +902,7 @@ No se propone: ORM, Redux, TanStack Query, axios, PWA, E2E obligatorio.
 | D-11 | Sin ORM; SQL explícito con `mysql2`. |
 | D-12 | Sin librería de charts: barras, dona y heatmap se resuelven con SVG/CSS propios para no sumar peso al bundle. |
 | D-13 | Sin `date-fns`: las claves de día local se calculan con utilidades propias para no derivar el día con `toISOString()`. |
-| D-14 | El nivel del heatmap lo calcula el backend con los tres primeros umbrales (1, 2, 3 y 4 como color más intenso); el cuarto valor queda como límite máximo configurado. |
+| D-14 | El heatmap tiene cinco bandas: los cuatro umbrales ascendentes definen los cortes y un día por debajo del primer umbral se muestra como nivel 0. |
 | D-15 | La contraseña actual incorrecta responde `422 INVALID_CURRENT_PASSWORD`. |
 
 ### Pendientes de aprobación
@@ -918,7 +918,7 @@ No se propone: ORM, Redux, TanStack Query, axios, PWA, E2E obligatorio.
 | P-07 | Borrado de cuenta | Fuera de la v1. | Fuera de alcance. |
 | P-08 | Entorno de despliegue | Definir antes de publicar. | Pendiente. |
 | P-09 | Sincronizar `DB.sql` con la base real | Actualizar collation a `utf8mb4_0900_ai_ci` y conservar CHECK/default JSON; el backend igualmente inserta settings explícito. | Pendiente. |
-| P-10 | Cuarto umbral del heatmap | Hoy el backend usa los tres primeros umbrales para los niveles y guarda el cuarto como límite máximo. | Pendiente de decisión del usuario. |
+| P-10 | Cuarto umbral del heatmap | El backend ya usa los cuatro umbrales para las cinco bandas (D-14). | Resuelto por decisión del usuario. |
 
 ---
 

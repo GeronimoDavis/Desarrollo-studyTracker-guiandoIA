@@ -112,13 +112,12 @@ una contraseña actual incorrecta muestra `La contraseña actual no es correcta.
 
 ## Observaciones
 
-1. **Cuarto umbral del heatmap.** El backend guarda cuatro umbrales, pero el
-   cálculo de niveles usa los tres primeros (nivel 1 por debajo del primero,
-   nivel 2 hasta el segundo, nivel 3 hasta el tercero y nivel 4 a partir del
-   tercero). El cuarto valor queda como límite máximo configurado y no cambia los
-   colores. La vista previa de Ajustes replica ese mismo cálculo para no mentir.
-   Queda como decisión pendiente alinear el backend con la lectura de "cinco
-   niveles" de la spec.
+1. **Cuarto umbral del heatmap (resuelto).** El backend calcula las cinco bandas
+   con los cuatro umbrales: 0 sin actividad o por debajo del primer umbral, 1
+   hasta el segundo, 2 hasta el tercero, 3 hasta el cuarto y 4 a partir del
+   cuarto. Un día con actividad pero por debajo del primer umbral se ve igual
+   que un día sin actividad (sigue contando como día activo). La vista previa de
+   Ajustes replica ese mismo cálculo.
 2. **Límite de registro.** El registro permite 5 cuentas por hora y por IP. En
    desarrollo puede frenar las pruebas; reiniciar el servidor (los contadores
    viven en memoria) libera el contador.

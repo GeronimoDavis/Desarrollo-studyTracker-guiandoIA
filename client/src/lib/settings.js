@@ -27,7 +27,8 @@ export function validateThresholds(values) {
   return { valid: true, message: null, values: numbers };
 }
 
-// replica el cálculo de niveles del backend (/api/stats/heatmap)
+// replica el cálculo de niveles del backend (/api/stats/heatmap):
+// cinco bandas a partir de cuatro umbrales ascendentes en minutos
 export function getHeatmapLevel(minutes, thresholds = DEFAULT_HEATMAP_THRESHOLDS) {
   const value = Number(minutes) || 0;
 
@@ -35,17 +36,21 @@ export function getHeatmapLevel(minutes, thresholds = DEFAULT_HEATMAP_THRESHOLDS
     return 0;
   }
 
-  const [first, second, third] = thresholds;
+  const [first, second, third, fourth] = thresholds;
 
   if (value < first) {
-    return 1;
+    return 0;
   }
 
   if (value < second) {
-    return 2;
+    return 1;
   }
 
   if (value < third) {
+    return 2;
+  }
+
+  if (value < fourth) {
     return 3;
   }
 
@@ -53,28 +58,33 @@ export function getHeatmapLevel(minutes, thresholds = DEFAULT_HEATMAP_THRESHOLDS
 }
 
 export function getThresholdBands(thresholds = DEFAULT_HEATMAP_THRESHOLDS) {
-  const [first, second, third] = thresholds;
+  const [first, second, third, fourth] = thresholds;
 
   return [
     {
-      level: 1,
-      label: `Menos de ${first} min`,
-      sample: Math.max(Math.floor(first / 2), 1)
+      level: 0,
+      label: `Sin actividad o menos de ${first} min`,
+      sample: 0
     },
     {
-      level: 2,
+      level: 1,
       label: `${first} – ${second - 1} min`,
       sample: first
     },
     {
-      level: 3,
+      level: 2,
       label: `${second} – ${third - 1} min`,
       sample: second
     },
     {
-      level: 4,
-      label: `${third} min o más`,
+      level: 3,
+      label: `${third} – ${fourth - 1} min`,
       sample: third
+    },
+    {
+      level: 4,
+      label: `${fourth} min o más`,
+      sample: fourth
     }
   ];
 }

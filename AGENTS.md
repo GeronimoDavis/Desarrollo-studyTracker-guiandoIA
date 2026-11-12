@@ -2,6 +2,11 @@
 
 Aplicación web simple para estudiantes: registrar tiempo de estudio por materia, usar un cronómetro libre/fijo y ver rachas, reportes y heatmap.
 
+## Inicio de Sesión (obligatorio)
+- Leer `docs/constitution.md` y `MEMORY.md` **antes** de planificar o tocar código: son los principios y el estado real del proyecto.
+- `MEMORY.md` se actualiza **automáticamente al terminar cada tarea o funcionalidad**, manteniéndolo en ~50 líneas (resumir en lugar de crecer).
+- La spec activa es `specs/001-sistema-estudio/`; si un requisito no está ahí, primero se escribe la spec.
+
 ## Alcance y Simplicidad
 - Esto es una app de estudio para estudiantes, **no un sistema empresarial ni una app para la NASA**.
 - Implementar solo lo acordado en `specs/001-sistema-estudio/spec.md`, `plan.md` y `tasks.md`.
@@ -12,12 +17,13 @@ Aplicación web simple para estudiantes: registrar tiempo de estudio por materia
 
 ## Stack y Estructura
 - **Backend:** Node.js, Express 5 y MySQL 8.x con `mysql2`.
-- **Frontend:** React 19, Vite, Tailwind CSS 4 y React Router 7; gráficos con Recharts.
+- **Frontend:** React 19, Vite, Tailwind CSS 4 y React Router 7; gráficos en SVG/CSS propios (sin librería de charts).
 - **Estructura:**
   - `/server`: API REST, controladores, rutas, servicios, repositorios y esquemas Zod.
   - `/client`: React, vistas, hooks, servicios API y lógica del cronómetro.
   - `/specs`: especificación, plan y checklist de tareas.
-  - `/docs`: documentación de la API.
+  - `/docs`: documentación de la API (`API.md`), constitución (`constitution.md`) y evidencia de QA (`QA.md`).
+  - `/MEMORY.md`: estado real del proyecto; se actualiza al cerrar cada tarea.
 
 ## Comandos
 - `npm run dev`: Inicia servidor y cliente.
@@ -42,7 +48,7 @@ Aplicación web simple para estudiantes: registrar tiempo de estudio por materia
 - **Cronómetro fijo:** Conteo descendente por bloques con descansos de 5, 10 o 15 min. El tiempo efectivo excluye descansos.
 - **Idempotencia:** Reintentar el guardado con el mismo `clientId` debe devolver la sesión existente, no duplicarla.
 - **Solapamiento:** El backend rechaza sesiones superpuestas del mismo usuario con `SESSION_OVERLAP`.
-- **Heatmap:** Año calendario local, 365/366 días, días futuros neutros y 4 niveles según settings.
+- **Heatmap:** Año calendario local, 365/366 días, días futuros neutros y cinco bandas según los cuatro umbrales de settings.
 
 ## Forma de Trabajar
 - Planificar primero la estructura del módulo antes de implementar.
