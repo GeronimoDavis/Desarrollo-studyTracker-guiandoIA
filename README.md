@@ -1,19 +1,22 @@
 # Sistema de Seguimiento de Estudio
 
-Aplicación web multiusuario para registrar y analizar el tiempo de estudio por materia, con temporizador libre/fijo, rachas, reportes y heatmap anual.
+Aplicación web multiusuario para registrar y analizar el tiempo de estudio por
+materia: temporizador libre y fijo, rachas, reportes por período, heatmap anual y
+ajustes de cuenta.
 
 ## Stack
 
-- **Backend:** Node.js + Express 5 + MySQL 8.x (`mysql2`).
-- **Frontend:** React 19 + Vite + Tailwind CSS 4 + React Router.
+- **Backend:** Node.js + Express 5 + MySQL 8.x (`mysql2`), validación con Zod.
+- **Frontend:** React 19 + Vite + Tailwind CSS 4 + React Router 7.
 - **Base de datos:** `study_tracker` en MySQL 8.x, InnoDB, `utf8mb4_0900_ai_ci`.
 - **Autenticación:** JWT de acceso + refresh token rotativo en cookies httpOnly.
+- **Pruebas:** Vitest, Supertest y React Testing Library.
 
 ## Requisitos
 
 - Node.js 22 o superior.
 - MySQL 8.0.16 o superior (las `CHECK` constraints se aplican desde esa versión).
-- Base `study_tracker` creada.
+- Base `study_tracker` creada en MySQL.
 
 ## Instalación
 
@@ -40,19 +43,32 @@ DB_CONNECTION_LIMIT=10
 
 CLIENT_ORIGIN=http://localhost:5173
 COOKIE_SECURE=false
+
+# Generar valores largos y distintos, por ejemplo: openssl rand -hex 48
+JWT_ACCESS_SECRET=
+JWT_REFRESH_SECRET=
 ```
 
-`server/.env` no se versiona.
+Los dos secretos deben tener al menos 32 caracteres: el servidor no arranca con
+valores cortos o vacíos. `server/.env` no se versiona.
 
 ## Base de datos y migraciones
 
-La base ya existe. El runner registra un baseline si las tablas están creadas y no vuelve a ejecutar DDL destructivo:
+La migración reproducible está en `server/src/db/migrations/001_init.sql` y usa
+`utf8mb4_0900_ai_ci` con `CHECK` constraints activas. El runner registra un
+baseline si las tablas ya están creadas y no vuelve a ejecutar DDL destructivo:
 
 ```bash
 npm run db:migrate
 ```
 
-La migración reproducible está en `server/src/db/migrations/001_init.sql` y usa `utf8mb4_0900_ai_ci`.
+Para crear la base vacía:
+
+```sql
+CREATE DATABASE study_tracker
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+```
 
 ## Desarrollo
 
@@ -64,9 +80,12 @@ npm run dev
 - Cliente: <http://localhost:5173>
 - Health check: <http://localhost:4000/api/health>
 
-El cliente usa el proxy de Vite para `/api`, así que las cookies funcionan en mismo origen durante el desarrollo.
+El cliente usa el proxy de Vite para `/api`, así que las cookies funcionan en
+mismo origen durante el desarrollo. Usá siempre el puerto 5173: si queda otro
+Vite levantado en otro puerto, el navegador puede mostrar una versión vieja del
+código.
 
-## Scripts útiles
+## Scripts
 
 | Comando | Descripción |
 | --- | --- |
@@ -75,9 +94,9 @@ El cliente usa el proxy de Vite para `/api`, así que las cookies funcionan en m
 | `npm run dev:client` | Solo cliente con Vite. |
 | `npm run db:migrate` | Ejecuta el runner de migraciones/baseline. |
 | `npm --prefix server run seed -- --email=tu@email.com` | Limpia y siembra materias y sesiones de desarrollo para un usuario existente. |
-| `npm run build` | Compila el cliente. |
+| `npm run build` | Compila el cliente para producción. |
 | `npm test` | Ejecuta las pruebas de ambos workspaces. |
-| `npm run lint` | Ejecuta los linters configurados. |
+| `npm run lint` | Ejecuta ESLint (server) y oxlint (client). |
 
 ### Datos de desarrollo
 
@@ -95,12 +114,84 @@ npm --prefix server run seed -- --email=ana@example.com --days=60
 
 El script elimina las sesiones y materias previas de ese usuario antes de sembrar.
 
+## Pruebas
+
+```bash
+npm test        # 49 pruebas del server (Supertest + Vitest) y 78 del cliente
+npm run lint    # sin warnings
+npm run build   # build de producción del cliente
+```
+
+Los tests del cliente usan Vitest con jsdom y React Testing Library; los del
+server levantan la app Express contra la base real de desarrollo.
+
+## API
+
+La referencia completa está en [`docs/API.md`](docs/API.md). Resumen:
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| POST | `/api/auth/register` | Crea usuario, settings y cookies. |
+| POST | `/api/auth/login` | Inicia sesión. |
+| POST | `/api/auth/refresh` | Rota el refresh token. |
+| POST | `/api/auth/logout` | Revoca el refresh y limpia cookies. |
+| GET/PATCH | `/api/auth/me` | Perfil (nombre y zona horaria). |
+| PATCH | `/api/auth/password` | Cambia la contraseña y cierra la sesión. |
+| GET/POST | `/api/subjects` | Materias del usuario. |
+| GET/PUT/DELETE | `/api/subjects/:id` | Detalle, edición y archivado. |
+| POST | `/api/subjects/:id/restore` | Restaura una materia archivada. |
+| GET | `/api/subjects/:id/stats` | Resumen por semana, mes y año. |
+| POST | `/api/sessions` | Guarda una sesión (idempotente por `clientId`). |
+| GET | `/api/sessions` | Lista sesiones con filtros y paginación. |
+| GET | `/api/dashboard` | Hoy, período, extremos y racha. |
+| GET | `/api/stats/daily` | Reporte de un día. |
+| GET | `/api/stats/period` | Reporte de un período (semana o mes). |
+| GET | `/api/stats/streak` | Racha actual y mejor racha. |
+| GET | `/api/stats/heatmap` | Heatmap anual con niveles. |
+| GET/PUT | `/api/settings` | Umbrales del heatmap. |
+
+Las respuestas usan `{ "data": ... }` y los errores `{ "error": { "code", "message", "fields"? } }`.
+
+## Troubleshooting
+
+**`Variables de entorno inválidas` al arrancar**
+Faltan `JWT_ACCESS_SECRET` o `JWT_REFRESH_SECRET`, o tienen menos de 32 caracteres.
+
+**`ER_NOT_SUPPORTED_YET` o `CHECK` ignorado en MySQL**
+La versión de MySQL es anterior a 8.0.16. Actualizá a 8.0.16+ (recomendado 8.0.36
+o 8.4 LTS) y volvé a correr `npm run db:migrate`.
+
+**`Access denied for user`**
+Revisá `DB_USER`, `DB_PASSWORD` y `DB_HOST` de `server/.env` y que el usuario
+tenga permisos sobre la base `study_tracker`.
+
+**El login o el registro devuelven `429 RATE_LIMITED`**
+El límite es de 5 registros por hora y 10 intentos de login por 15 minutos y por
+IP. En desarrollo se puede reiniciar la API para limpiar el contador (vive en
+memoria) o esperar la ventana.
+
+**El navegador muestra una versión vieja o una pantalla en blanco**
+Hay un segundo servidor de Vite levantado en otro puerto. Cerralo y usá
+`http://localhost:5173` con una recarga forzada (`Ctrl+Shift+R`).
+
+**Las cookies no llegan a la API**
+Verificá que `CLIENT_ORIGIN` coincida con la URL del cliente y que el navegador
+esté en `http://localhost:5173` (el proxy de Vite reenvía `/api` al puerto 4000).
+
 ## Estado
 
-Fases 1–5 completadas: autenticación multiusuario, materias, sesiones, temporizador libre/fijo con recuperación, bloqueo multi-pestaña y guardado idempotente, dashboard diario, reportes por semana/mes, extremos, racha y heatmap anual responsive. La siguiente fase es ajustes, pulido y QA.
+Fases 1 a 6 completadas: autenticación multiusuario, CRUD de materias,
+temporizador libre y fijo con recuperación y guardado idempotente, dashboard
+diario, reportes por semana y mes, extremos, racha, heatmap anual responsive y
+ajustes de cuenta (perfil, zona horaria, umbrales del heatmap y cambio de
+contraseña). Incluye toasts, manejo de errores en español y auditoría de
+seguridad, performance y regresión MySQL documentadas en
+[`docs/QA.md`](docs/QA.md).
 
 ## Documentación
 
-- [`docs/API.md`](docs/API.md)
-- `specs/001-sistema-estudio/plan.md`
-- `specs/001-sistema-estudio/tasks.md`
+- [`docs/API.md`](docs/API.md) — referencia de la API.
+- [`docs/QA.md`](docs/QA.md) — auditorías de seguridad, performance y regresión MySQL.
+- [`specs/001-sistema-estudio/spec.md`](specs/001-sistema-estudio/spec.md) — requisitos.
+- [`specs/001-sistema-estudio/plan.md`](specs/001-sistema-estudio/plan.md) — plan de implementación.
+- [`specs/001-sistema-estudio/tasks.md`](specs/001-sistema-estudio/tasks.md) — checklist de tareas.

@@ -74,3 +74,4 @@ export async function deleteExpired(connection = pool) {
 
   return result.affectedRows;
 }
+

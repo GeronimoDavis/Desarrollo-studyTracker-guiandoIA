@@ -24,8 +24,3 @@ export function formatClock(totalSeconds) {
 
   return `${pad(minutes)}:${pad(seconds)}`;
 }
-
-export function formatMinutes(totalSeconds) {
-  const minutes = Math.round((Number(totalSeconds) || 0) / 60);
-  return `${minutes} min`;
-}

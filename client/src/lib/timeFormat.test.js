@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatClock, formatMinutes } from './timeFormat.js';
+import { formatClock } from './timeFormat.js';
 
 describe('timeFormat', () => {
   it('formatea segundos y minutos', () => {
@@ -10,6 +10,5 @@ describe('timeFormat', () => {
 
   it('normaliza valores inválidos o negativos', () => {
     expect(formatClock(-10)).toBe('00:00');
-    expect(formatMinutes(3600)).toBe('60 min');
   });
 });

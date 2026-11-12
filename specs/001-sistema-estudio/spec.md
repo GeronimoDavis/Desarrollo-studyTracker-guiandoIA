@@ -100,6 +100,7 @@ Reglas de acceso:
 | **BR-06** | Solo se guardan sesiones con al menos 60 segundos efectivos. Las más cortas se descartan con aviso. |
 | **BR-07** | La racha se calcula solo con sesiones `completed`. Si hoy no hay sesión pero ayer sí, la racha sigue viva hasta terminar el día. |
 | **BR-08** | El heatmap usa el año calendario local, rellena días sin datos con 0 y deja neutros los días futuros. Umbrales por defecto: `[60, 120, 240, 480]` minutos. |
+| **BR-13** | Los cinco niveles del heatmap se calculan con los tres primeros umbrales: 0 sin actividad, 1 por debajo del primero, 2 hasta el segundo, 3 hasta el tercero y 4 a partir del tercero. El cuarto umbral se guarda y se valida, pero no cambia el color (ver P-10 en el plan). |
 | **BR-09** | El nombre de materia es único por usuario sin distinguir mayúsculas. El índice incluye archivadas. |
 | **BR-10** | Una materia con sesiones se archiva; sin sesiones puede borrarse físicamente. |
 | **BR-11** | Las sesiones son inmutables en v1: no se editan ni se borran. |
@@ -208,7 +209,7 @@ Prefijo `/api`. Las respuestas exitosas usan `{ "data": ... }`. Los errores usan
 | GET | `/api/settings` | Sí | Ajustes |
 | PUT | `/api/settings` | Sí | Actualizar umbrales |
 
-Códigos de error: `VALIDATION_ERROR` 422, `UNAUTHENTICATED` 401, `TOKEN_EXPIRED` 401, `INVALID_CREDENTIALS` 401, `EMAIL_IN_USE` 409, `DUPLICATE_NAME` 409, `SUBJECT_ARCHIVED` 422, `INVALID_SESSION` 422, `SESSION_OVERLAP` 409, `NOT_FOUND` 404, `RATE_LIMITED` 429, `INTERNAL_ERROR` 500.
+Códigos de error: `VALIDATION_ERROR` 422, `UNAUTHENTICATED` 401, `TOKEN_EXPIRED` 401, `INVALID_CREDENTIALS` 401, `INVALID_CURRENT_PASSWORD` 422, `EMAIL_IN_USE` 409, `DUPLICATE_NAME` 409, `SUBJECT_ARCHIVED` 422, `INVALID_SESSION` 422, `SESSION_OVERLAP` 409, `NOT_FOUND` 404, `RATE_LIMITED` 429, `INTERNAL_ERROR` 500.
 
 ---
 

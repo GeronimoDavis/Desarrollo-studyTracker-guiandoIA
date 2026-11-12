@@ -1,14 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  FIXED_BREAK_MINUTES,
+  FIXED_TARGETS,
   expectedBreakCount,
-  isValidFixedPlan,
-  listFixedPlans
+  isValidFixedPlan
 } from '../utils/sessionPlan.js';
 
 describe('fixed session plan', () => {
   it('acepta las 18 combinaciones válidas', () => {
-    const plans = listFixedPlans();
+    const plans = FIXED_TARGETS.flatMap((targetMinutes) =>
+      FIXED_BREAK_MINUTES.map((breakMinutes) => ({
+        targetMinutes,
+        breakMinutes,
+        breakCount: expectedBreakCount(targetMinutes, breakMinutes)
+      }))
+    );
 
     expect(plans).toHaveLength(18);
 

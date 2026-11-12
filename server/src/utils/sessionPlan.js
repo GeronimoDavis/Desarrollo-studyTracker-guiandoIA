@@ -29,13 +29,3 @@ export function isValidFixedPlan(targetMinutes, breakMinutes, breakCount) {
 
   return expected !== null && breakCount === expected;
 }
-
-export function listFixedPlans() {
-  return FIXED_TARGETS.flatMap((targetMinutes) =>
-    FIXED_BREAK_MINUTES.map((breakMinutes) => ({
-      targetMinutes,
-      breakMinutes,
-      breakCount: expectedBreakCount(targetMinutes, breakMinutes)
-    }))
-  );
-}

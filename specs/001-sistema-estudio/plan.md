@@ -60,8 +60,8 @@ La implementación se divide en fases pequeñas y verificables. Ninguna fase com
 | Cliente | React 19 + Vite |
 | Routing | React Router |
 | Estilos | Tailwind CSS 4 con `@tailwindcss/vite` |
-| Gráficos | Recharts |
-| Fechas | `date-fns` en cliente + `Intl` en servidor |
+| Gráficos | SVG/CSS propios, sin librería de charts |
+| Fechas | Utilidades propias en cliente + `Intl` en servidor |
 | Pruebas | Vitest, Supertest, React Testing Library |
 | Tooling | ESLint, Prettier, Nodemon, `concurrently`, `dotenv` |
 
@@ -100,8 +100,8 @@ No se modifica `DB.sql` sin aprobación. Cualquier ajuste de collation o del def
 ┌──────────────────────────────────────────────────────────────────┐
 │ Navegador                                                        │
 │                                                                  │
-│  React 19 + Vite + Tailwind CSS + Recharts                       │
-│  AuthContext · TimerContext · SettingsContext · hooks de datos   │
+│  React 19 + Vite + Tailwind CSS 4 + SVG propio                    │
+│  AuthContext · TimerContext · ToastContext · hooks de datos        │
 │  fetch('/api', credentials: 'include')                           │
 └──────────────────────────────┬───────────────────────────────────┘
                                │ proxy /api en desarrollo
@@ -225,108 +225,113 @@ tracker-estudiante/
 │   │       └── helpers/
 │   └── scripts/
 │       └── seed.js                  # datos de desarrollo, sin credenciales
-└── client/
-    ├── package.json
-    ├── vite.config.js
-    ├── index.html
-    └── src/
-        ├── main.jsx
-        ├── App.jsx
-        ├── index.css
-        ├── router.jsx
-        ├── api/
-        │   ├── client.js            # fetch, cookies, refresh single-flight
-        │   ├── auth.js
-        │   ├── subjects.js
-        │   ├── sessions.js
-        │   ├── dashboard.js
-        │   ├── stats.js
-        │   └── settings.js
-        ├── context/
-        │   ├── AuthContext.jsx
-        │   ├── TimerContext.jsx
-        │   ├── SettingsContext.jsx
-        │   └── ToastContext.jsx
-        ├── hooks/
-        │   ├── useSubjects.js
-        │   ├── useSubjectSummary.js
-        │   ├── useDashboard.js
-        │   ├── useHeatmap.js
-        │   ├── useSessionSave.js
-        │   ├── useNow.js
-        │   └── useMediaQuery.js
-        ├── components/
-        │   ├── layout/
-        │   │   ├── AppShell.jsx
-        │   │   ├── Sidebar.jsx
-        │   │   ├── BottomNav.jsx
-        │   │   └── ProtectedRoute.jsx
-        │   ├── ui/
-        │   │   ├── Button.jsx
-        │   │   ├── Input.jsx
-        │   │   ├── Select.jsx
-        │   │   ├── Card.jsx
-        │   │   ├── Modal.jsx
-        │   │   ├── ConfirmDialog.jsx
-        │   │   ├── EmptyState.jsx
-        │   │   ├── Spinner.jsx
-        │   │   ├── ErrorBanner.jsx
-        │   │   └── Toast.jsx
-        │   ├── subjects/
-        │   │   ├── SubjectList.jsx
-        │   │   ├── SubjectCard.jsx
-        │   │   ├── SubjectFormModal.jsx
-        │   │   ├── ColorPicker.jsx
-        │   │   ├── ArchivedSubjects.jsx
-        │   │   └── SubjectSummaryCards.jsx
-        │   ├── timer/
-        │   │   ├── SubjectSelector.jsx
-        │   │   ├── ModeTabs.jsx
-        │   │   ├── DurationPicker.jsx
-        │   │   ├── BreakPlanPicker.jsx
-        │   │   ├── TimerDisplay.jsx
-        │   │   ├── TimerControls.jsx
-        │   │   ├── BreakBanner.jsx
-        │   │   ├── ProgressPanel.jsx
-        │   │   ├── RecoveryDialog.jsx
-        │   │   └── SessionSummaryDialog.jsx
-        │   └── dashboard/
-        │       ├── TodayReport.jsx
-        │       ├── PeriodSelector.jsx
-        │       ├── PeriodBarChart.jsx
-        │       ├── SubjectDonut.jsx
-        │       ├── ExtremesCards.jsx
-        │       ├── StreakCard.jsx
-        │       ├── Heatmap.jsx
-        │       ├── HeatmapLegend.jsx
-        │       └── AccessibleTable.jsx
-        ├── lib/
-        │   ├── dates.js
-        │   ├── timeFormat.js
-        │   ├── timer/
-        │   │   ├── breakPlan.js
-        │   │   ├── engine.js
-        │   │   └── snapshot.js
-        │   ├── heatmap.js
-        │   ├── colors.js
-        │   └── constants.js
-        ├── pages/
-        │   ├── Login.jsx
-        │   ├── Register.jsx
-        │   ├── Dashboard.jsx
-        │   ├── Timer.jsx
-        │   ├── Subjects.jsx
-        │   ├── SubjectDetail.jsx
-        │   ├── Reports.jsx
-        │   ├── Settings.jsx
-        │   └── NotFound.jsx
-        └── test/
-            ├── breakPlan.test.js
-            ├── engine.test.js
-            ├── dates.test.js
-            ├── heatmap.test.js
-            ├── auth.test.jsx
-            └── components/
+    └── client/
+        ├── package.json
+        ├── vite.config.js
+        ├── vitest.config.js
+        ├── index.html
+        └── src/
+            ├── main.jsx                 # ErrorBoundary + providers + router
+            ├── index.css
+            ├── router.jsx               # rutas con errorElement en español
+            ├── api/
+            │   ├── client.js            # fetch, cookies, refresh single-flight
+            │   ├── auth.js
+            │   ├── subjects.js
+            │   ├── sessions.js          # POST + GET paginado
+            │   ├── dashboard.js         # dashboard, período y heatmap
+            │   └── settings.js          # umbrales del heatmap
+            ├── context/
+            │   ├── AuthContext.jsx
+            │   ├── TimerContext.jsx
+            │   ├── ToastContext.jsx      # avisos consistentes
+            │   ├── authContext.js
+            │   ├── timerContext.js
+            │   ├── toastContext.js
+            │   ├── useAuth.js
+            │   ├── useTimer.js
+            │   └── useToast.js
+            ├── hooks/
+            │   ├── useSubjects.js
+            │   ├── useSubjectSummary.js
+            │   ├── useDashboard.js       # hoy, período, racha y sesiones
+            │   ├── useHeatmap.js
+            │   ├── useSettings.js
+            │   └── useSessionSave.js
+            ├── components/
+            │   ├── ErrorBoundary.jsx
+            │   ├── layout/
+            │   │   ├── AppShell.jsx      # sidebar en desktop, bottom nav en móvil
+            │   │   ├── Sidebar.jsx
+            │   │   ├── BottomNav.jsx
+            │   │   ├── NavIcon.jsx
+            │   │   ├── navItems.js
+            │   │   ├── AuthLayout.jsx
+            │   │   ├── GuestRoute.jsx
+            │   │   ├── ProtectedRoute.jsx
+            │   │   └── RouteErrorElement.jsx
+            │   ├── ui/
+            │   │   ├── Button.jsx
+            │   │   ├── EmptyState.jsx
+            │   │   ├── ErrorBanner.jsx
+            │   │   ├── FormField.jsx
+            │   │   └── Spinner.jsx
+            │   ├── subjects/
+            │   │   ├── SubjectCard.jsx
+            │   │   ├── SubjectFormModal.jsx
+            │   │   └── ConfirmDialog.jsx
+            │   ├── timer/
+            │   │   ├── SubjectSelector.jsx
+            │   │   ├── ModeTabs.jsx
+            │   │   ├── DurationPicker.jsx
+            │   │   ├── BreakPlanPicker.jsx
+            │   │   ├── TimerDisplay.jsx
+            │   │   ├── TimerControls.jsx
+            │   │   ├── ProgressPanel.jsx
+            │   │   ├── RecoveryDialog.jsx
+            │   │   ├── SessionSummaryDialog.jsx
+            │   │   └── TimerNavigationGuard.jsx
+            │   ├── dashboard/
+            │   │   ├── TodayReport.jsx
+            │   │   ├── PeriodSelector.jsx
+            │   │   ├── PeriodBarChart.jsx
+            │   │   ├── SubjectDonut.jsx
+            │   │   ├── ExtremesCards.jsx
+            │   │   ├── StreakCard.jsx
+            │   │   ├── Heatmap.jsx
+            │   │   ├── HeatmapLegend.jsx
+            │   │   └── ChartDataTable.jsx
+            │   └── settings/
+            │       ├── ProfileForm.jsx
+            │       ├── ThresholdEditor.jsx
+            │       └── PasswordForm.jsx
+            ├── lib/
+            │   ├── dates.js               # claves de día local, sin toISOString
+            │   ├── timeFormat.js
+            │   ├── dashboard.js           # matriz por día/materia y semanas
+            │   ├── heatmap.js             # niveles y colores
+            │   ├── settings.js            # validación de umbrales y bandas
+            │   ├── timezones.js           # zonas IANA
+            │   ├── events.js              # sesión guardada y ajustes actualizados
+            │   └── timer/
+            │       ├── breakPlan.js
+            │       ├── engine.js
+            │       └── snapshot.js
+            ├── pages/
+            │   ├── Login.jsx
+            │   ├── Register.jsx
+            │   ├── Dashboard.jsx
+            │   ├── Timer.jsx
+            │   ├── Subjects.jsx
+            │   ├── SubjectDetail.jsx
+            │   ├── Reports.jsx
+            │   ├── Settings.jsx
+            │   └── NotFound.jsx
+            ├── utils/
+            │   └── format.js
+            └── test/
+                └── setup.js
+
 ```
 
 **Nota sobre `DB.sql`:** se conserva en la raíz como referencia aprobada. La migración `server/src/db/migrations/001_init.sql` debe ser una copia adaptada y versionada. Si la base ya existe, el runner registra un baseline en `schema_migrations` en lugar de volver a ejecutar el DDL.
@@ -834,9 +839,6 @@ Ejemplos:
 | `morgan` | server | Logs de desarrollo | Dev. |
 | `nodemon`, `vitest`, `supertest` | server | Desarrollo/pruebas | Dev. |
 | `react`, `react-dom`, `react-router-dom` | client | Base | Estándar. |
-| `recharts` | client | Barras y dona | **Aprobación requerida.** |
-| `date-fns` | client | Rangos y formato | **Aprobación requerida.** |
-| `lucide-react`, `clsx` | client | Iconos/utilidades | Ligeros. |
 | `tailwindcss`, `@tailwindcss/vite` | client | Estilos | Tailwind 4. |
 | `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event` | client | Pruebas | Dev. |
 | `concurrently` | raíz | `npm run dev` | Ligero. |
@@ -898,20 +900,25 @@ No se propone: ORM, Redux, TanStack Query, axios, PWA, E2E obligatorio.
 | D-09 | La sesión pertenece al día local de inicio. |
 | D-10 | MySQL 8.x local (puerto 3306, InnoDB, `utf8mb4_0900_ai_ci`, CHECK activos); validación fuerte en backend. |
 | D-11 | Sin ORM; SQL explícito con `mysql2`. |
+| D-12 | Sin librería de charts: barras, dona y heatmap se resuelven con SVG/CSS propios para no sumar peso al bundle. |
+| D-13 | Sin `date-fns`: las claves de día local se calculan con utilidades propias para no derivar el día con `toISOString()`. |
+| D-14 | El nivel del heatmap lo calcula el backend con los tres primeros umbrales (1, 2, 3 y 4 como color más intenso); el cuarto valor queda como límite máximo configurado. |
+| D-15 | La contraseña actual incorrecta responde `422 INVALID_CURRENT_PASSWORD`. |
 
 ### Pendientes de aprobación
 
-| ID | Tema | Propuesta |
-| --- | --- | --- |
-| P-01 | Recharts vs Chart.js | Recharts. |
-| P-02 | `date-fns` vs utilidades propias | `date-fns` para el cliente; `Intl` para TZ. |
-| P-03 | Tailwind 4 vs 3.4 | Tailwind 4 con plugin de Vite. |
-| P-04 | `bcryptjs` vs `bcrypt` nativo | `bcryptjs` por portabilidad en Windows. |
-| P-05 | Racha histórica máxima | Fuera de la v1. |
-| P-06 | Recuperación de contraseña por email | Fuera de la v1. |
-| P-07 | Borrado de cuenta | Fuera de la v1. |
-| P-08 | Entorno de despliegue | Definir antes de F6. |
-| P-09 | Sincronizar `DB.sql` con la base real | Actualizar collation a `utf8mb4_0900_ai_ci` y conservar CHECK/default JSON; el backend igualmente inserta settings explícito. |
+| ID | Tema | Propuesta | Estado |
+| --- | --- | --- | --- |
+| P-01 | Librería de gráficos | SVG/CSS propios, sin dependencia extra. | Resuelto (D-12). |
+| P-02 | `date-fns` vs utilidades propias | Utilidades propias en el cliente; `Intl` para zonas horarias. | Resuelto (D-13). |
+| P-03 | Tailwind 4 vs 3.4 | Tailwind 4 con plugin de Vite. | Resuelto. |
+| P-04 | `bcryptjs` vs `bcrypt` nativo | `bcryptjs` por portabilidad en Windows. | Resuelto. |
+| P-05 | Racha histórica máxima | Fuera de la v1. | Fuera de alcance. |
+| P-06 | Recuperación de contraseña por email | Fuera de la v1. | Fuera de alcance. |
+| P-07 | Borrado de cuenta | Fuera de la v1. | Fuera de alcance. |
+| P-08 | Entorno de despliegue | Definir antes de publicar. | Pendiente. |
+| P-09 | Sincronizar `DB.sql` con la base real | Actualizar collation a `utf8mb4_0900_ai_ci` y conservar CHECK/default JSON; el backend igualmente inserta settings explícito. | Pendiente. |
+| P-10 | Cuarto umbral del heatmap | Hoy el backend usa los tres primeros umbrales para los niveles y guarda el cuarto como límite máximo. | Pendiente de decisión del usuario. |
 
 ---
 

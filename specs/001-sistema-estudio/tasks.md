@@ -253,37 +253,46 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 | T91 | [x] | Construir editor de 4 umbrales del heatmap con validación ascendente y vista previa. | T52, T90 | FR-SET-02 | Guardar recarga el heatmap con los nuevos niveles. |
 | T92 | [x] | Construir cambio de contraseña con confirmación y cierre de sesión posterior. | T16, T90 | FR-AUTH-08 | Contraseña incorrecta 422; cambio exitoso redirige a login. |
 | T93 | [x] | Agregar ErrorBoundary, toasts consistentes y mensajes de error de red/reintento. | T74–T92 | NFR-03 | Errores inesperados no rompen la app; mensajes en español. |
-| T94 | [ ] | Auditoría de seguridad: cookies, SameSite, Secure, rate limit, origen, SQL parametrizado, secretos y logs. | T90–T93 | NFR-02, NFR-06 | Checklist sin hallazgos críticos; secretos fuera del repo. |
-| T95 | [ ] | Prueba de performance con 10 000 sesiones: dashboard < 2 s, API < 300 ms. | T55, T75 | NFR-01 | Tiempos medidos y documentados; índices usados. |
-| T96 | [ ] | Regresión MySQL 8.x: verificar `utf8mb4_0900_ai_ci`, CHECK activos, default JSON, migración y `schema_migrations`. | T3, T57 | NFR-08, D-10 | Base real y migración coinciden; constraints activos. |
-| T97 | [ ] | Ejecutar suite completa: unitarias, integración, componentes y lint. | T1–T96 | NFR-07 | Todo verde; sin warnings bloqueantes. |
-| T98 | [ ] | Checklist manual de `AGENTS.md`: POST/GET de sesiones y materias, tiempo efectivo, racha y heatmap. | T97 | AGENTS.md | Checklist firmado. |
-| T99 | [ ] | README final: instalación, `.env`, migración, scripts, API, pruebas y troubleshooting MySQL 8.x. | T97 | AGENTS.md | Un tercero puede levantar y probar la app. |
-| T100 | [ ] | E2E opcional: registro → materia → sesión libre → dashboard y login → dashboard con seed. | T97 | NFR-07 | Flujo crítico automatizado o decisión de omitirlo registrada. |
-| T101 | [ ] | Limpieza: `console.log`, código muerto, TODOs, dependencias sin usar y archivos temporales. | T97 | NFR-07 | Repo limpio; sin secretos ni artefactos. |
-| T102 | [ ] | Sincronizar `spec.md`, `plan.md`, `tasks.md` y `README.md` con la implementación final. | T99–T101 | — | Documentos y código coinciden. |
+| T94 | [x] | Auditoría de seguridad: cookies, SameSite, Secure, rate limit, origen, SQL parametrizado, secretos y logs. | T90–T93 | NFR-02, NFR-06 | Checklist sin hallazgos críticos; secretos fuera del repo. |
+| T95 | [x] | Prueba de performance con 10 000 sesiones: dashboard < 2 s, API < 300 ms. | T55, T75 | NFR-01 | Tiempos medidos y documentados; índices usados. |
+| T96 | [x] | Regresión MySQL 8.x: verificar `utf8mb4_0900_ai_ci`, CHECK activos, default JSON, migración y `schema_migrations`. | T3, T57 | NFR-08, D-10 | Base real y migración coinciden; constraints activos. |
+| T97 | [x] | Ejecutar suite completa: unitarias, integración, componentes y lint. | T1–T96 | NFR-07 | Todo verde; sin warnings bloqueantes. |
+| T98 | [x] | Checklist manual de `AGENTS.md`: POST/GET de sesiones y materias, tiempo efectivo, racha y heatmap. | T97 | AGENTS.md | Checklist firmado. |
+| T99 | [x] | README final: instalación, `.env`, migración, scripts, API, pruebas y troubleshooting MySQL 8.x. | T97 | AGENTS.md | Un tercero puede levantar y probar la app. |
+| T100 | [x] | E2E opcional: registro → materia → sesión libre → dashboard y login → dashboard con seed. | T97 | NFR-07 | Flujo crítico automatizado o decisión de omitirlo registrada. |
+| T101 | [x] | Limpieza: `console.log`, código muerto, TODOs, dependencias sin usar y archivos temporales. | T97 | NFR-07 | Repo limpio; sin secretos ni artefactos. |
+| T102 | [x] | Sincronizar `spec.md`, `plan.md`, `tasks.md` y `README.md` con la implementación final. | T99–T101 | — | Documentos y código coinciden. |
 | T103 | [ ] | **Gate final:** revisión de aceptación global, demo de 10 minutos y aprobación del usuario. | Todas | — | Release candidate aprobado. |
 
 **Definition of Done F6:** ajustes completos, seguridad/performance verificadas, documentación final y aceptación del usuario.
+
+**Decisión T100 (E2E):** no se incorpora una suite E2E al repositorio porque exigiría
+un runner de navegador y dependencias extra. El flujo crítico se verificó con un
+gate en navegador headless (Edge vía CDP: dashboard, reportes, temporizador y
+ajustes renderizan y las interacciones guardan) y con el checklist manual de
+`AGENTS.md` contrastado contra SQL, documentado en `docs/QA.md`.
+
+**Evidencia F6:** `docs/QA.md` reúne la auditoría de seguridad, las medidas de
+performance con 10 000 sesiones, la regresión MySQL 8.x y el checklist manual.
 
 ---
 
 ## Definition of Done global
 
-- [ ] Todos los requisitos P0 de la spec multiusuario implementados.
-- [ ] Multiusuario con aislamiento total por `user_id`.
-- [ ] Sesión libre y fija con tiempo efectivo correcto.
-- [ ] Abandonar guarda `abandoned` con el efectivo real.
-- [ ] `session_date` derivada en servidor con zona IANA.
-- [ ] Dashboard, reportes, extremos, racha y heatmap consistentes.
-- [ ] Validaciones backend alineadas con los CHECK activos de MySQL 8.x.
-- [ ] MySQL 8.x verificado: InnoDB, `utf8mb4_0900_ai_ci`, CHECK, default JSON y migración reproducible.
-- [ ] Suite de tests en verde.
-- [ ] Checklist manual de `AGENTS.md` completo.
-- [ ] Sin secretos en el repositorio; `.env` ignorado.
-- [ ] UI en español; código/API/DB en inglés.
-- [ ] README actualizado.
-- [ ] Documentos `spec.md`, `plan.md` y `tasks.md` sincronizados.
+- [x] Todos los requisitos P0 de la spec multiusuario implementados.
+- [x] Multiusuario con aislamiento total por `user_id`.
+- [x] Sesión libre y fija con tiempo efectivo correcto.
+- [x] Abandonar guarda `abandoned` con el efectivo real.
+- [x] `session_date` derivada en servidor con zona IANA.
+- [x] Dashboard, reportes, extremos, racha y heatmap consistentes.
+- [x] Validaciones backend alineadas con los CHECK activos de MySQL 8.x.
+- [x] MySQL 8.x verificado: InnoDB, `utf8mb4_0900_ai_ci`, CHECK, default JSON y migración reproducible.
+- [x] Suite de tests en verde.
+- [x] Checklist manual de `AGENTS.md` completo.
+- [x] Sin secretos en el repositorio; `.env` ignorado.
+- [x] UI en español; código/API/DB en inglés.
+- [x] README actualizado.
+- [x] Documentos `spec.md`, `plan.md` y `tasks.md` sincronizados.
 
 ## Reglas de bloqueo
 
