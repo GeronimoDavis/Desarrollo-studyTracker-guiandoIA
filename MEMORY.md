@@ -21,6 +21,7 @@
 - **Vite con instancias duplicadas**: dos servidores (5173/5174) sirvieron módulos viejos y la UI mostró errores; usar siempre `http://localhost:5173` y reiniciar Vite tras cambios grandes.
 - **Límite de registro (5/h por IP)**: en desarrollo, reiniciar la API limpia el contador en memoria.
 - **Idempotencia y solapamiento**: reintentar con el mismo `clientId` devuelve la sesión existente; sesiones superpuestas devuelven 409 `SESSION_OVERLAP`.
+- **`keyGenerator` de `express-rate-limit`**: todo `keyGenerator` propio debe pasar por `ipKeyGenerator` (normaliza IPv6 a /56); sin eso la librería avisa `ERR_ERL_KEY_GEN_IPV6` al arrancar y un /64 completo puede evadir el límite.
 
 ## Próximos pasos
 1. Próxima funcionalidad: `/sdd-feature <idea>` crea `specs/002-*` con spec, plan y tareas; después `/sdd-implement 002-nombre Tn` tarea por tarea.

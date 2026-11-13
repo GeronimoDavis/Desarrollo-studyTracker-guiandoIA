@@ -16,7 +16,7 @@ temporarios que se eliminan al terminar.
 | Cookies de sesión | OK | `st_access` (path `/api`) y `st_refresh` (path `/api/auth`) con `httpOnly`, `SameSite=Lax` y `secure` según `COOKIE_SECURE`. Se borran al logout y al cambiar la contraseña. |
 | Tokens | OK | Access JWT de 15 min, refresh JWT de 7 días rotativo. En la base solo se guarda el hash SHA-256 del refresh token, con `revoked_at` y expiración. |
 | Contraseñas | OK | `bcryptjs` con coste 12. El login de un email inexistente responde igual que uno con contraseña incorrecta (hash señuelo). |
-| Rate limiting | OK | API 300 req/15 min, registro 5/h, login 10/15 min por `ip + email`, refresh 30/min. Respuesta `429 RATE_LIMITED`. |
+| Rate limiting | OK | API 300 req/15 min, registro 5/h, login 10/15 min por `ip + email`, refresh 30/min. El `keyGenerator` del login usa `ipKeyGenerator` de la librería, que normaliza IPv6 a un /56 para que un /64 completo no evada el límite. Respuesta `429 RATE_LIMITED`. |
 | Origen y CORS | OK | `cors` con `origin: CLIENT_ORIGIN` y `credentials: true`; además `originCheck` rechaza con `403 ORIGIN_NOT_ALLOWED` los métodos mutantes enviados desde otro origen. |
 | Cabeceras y cuerpo | OK | `helmet()` activo, `x-powered-by` deshabilitado y body JSON limitado a 100 kB. |
 | SQL parametrizado | OK | Todos los valores viajan como placeholders `?`. Los fragmentos interpolados son listas de columnas y condiciones construidas con valores fijos, nunca datos del usuario. |

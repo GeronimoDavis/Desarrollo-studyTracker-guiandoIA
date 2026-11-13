@@ -49,6 +49,7 @@ Aplicación web simple para estudiantes: registrar tiempo de estudio por materia
 - **Idempotencia:** Reintentar el guardado con el mismo `clientId` debe devolver la sesión existente, no duplicarla.
 - **Solapamiento:** El backend rechaza sesiones superpuestas del mismo usuario con `SESSION_OVERLAP`.
 - **Heatmap:** Año calendario local, 365/366 días, días futuros neutros y cinco bandas según los cuatro umbrales de settings.
+- **Rate limit:** todo `keyGenerator` propio debe usar `ipKeyGenerator` (IPv6 a /56) o la librería avisa `ERR_ERL_KEY_GEN_IPV6` al arrancar.
 
 ## Forma de Trabajar
 - Planificar primero la estructura del módulo antes de implementar.
