@@ -63,6 +63,7 @@ Aplicación web simple para estudiantes: registrar tiempo de estudio por materia
 - Trabajar sobre `main`.
 - Hacer commits pequeños y descriptivos por bloque de trabajo.
 - Pushear al finalizar cada fase o bloque importante.
+- **Preguntar antes de commitear:** no ejecutar `git commit` ni `git push` sin autorización explícita del usuario en la sesión. Informar qué archivos entran, el mensaje del commit y esperar el OK.
 - **Nunca** commitear `server/.env`, secretos, tokens ni credenciales.
 
 ## Límites
