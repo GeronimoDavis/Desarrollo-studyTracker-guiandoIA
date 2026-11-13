@@ -1,10 +1,26 @@
 @import "tailwindcss";
 
+/* El tema lo elige el usuario (no el sistema operativo), así que la variante
+   `dark:` se dispara por el atributo `data-theme` del documento. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   color-scheme: light;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html {
+  background-color: #f8fafc;
+}
+
+:root[data-theme="dark"] html {
+  background-color: #020617;
 }
 
 body {
@@ -17,9 +33,214 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root[data-theme="dark"] body {
+  background-color: #020617;
+  color: #e2e8f0;
+}
+
+/* Transición de color al cambiar de tema (150-200 ms). Se desactiva si el
+   usuario pidió menos movimiento. */
+@media (prefers-reduced-motion: no-preference) {
+  body * {
+    transition-property:
+      background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 180ms;
+    transition-timing-function: ease;
+  }
+}
+
 button,
 input,
 select,
 textarea {
   font: inherit;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tema oscuro                                                         */
+/* ------------------------------------------------------------------ */
+/* Tailwind 4 compila los colores a variables CSS, así que el tema oscuro
+   se resuelve re-mapeando las clases por rol (superficie, texto, borde y
+   acento). Evita editar cada componente con variantes `dark:` y mantiene la
+   paleta en un único lugar. Las excepciones (heatmap, dona y controles con
+   color propio) llevan su variante `dark:` explícita. */
+
+:root[data-theme="dark"] {
+  /* Superficies: página / elevado / hundido */
+  --surface-page: #020617;
+  --surface-raised: #0f172a;
+  --surface-sunken: #1e293b;
+
+  /* Texto */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  /* Bordes */
+  --border-subtle: #1e293b;
+  --border-strong: #334155;
+
+  /* Acentos */
+  --accent-text: #34d399;
+  --accent-text-strong: #6ee7b7;
+  --accent-surface: #022c22;
+  --accent-surface-strong: #064e3b;
+  --danger-text: #fda4af;
+  --danger-surface: #4c0519;
+  --warning-text: #fbbf24;
+  --warning-surface: #451a03;
+}
+
+:root[data-theme="dark"] .bg-slate-50 {
+  background-color: var(--surface-page);
+}
+
+:root[data-theme="dark"] .bg-white {
+  background-color: var(--surface-raised);
+}
+
+:root[data-theme="dark"] .bg-white\/90 {
+  background-color: #0f172ae6;
+}
+
+:root[data-theme="dark"] .bg-white\/95 {
+  background-color: #0f172af2;
+}
+
+:root[data-theme="dark"] .bg-slate-100 {
+  background-color: var(--surface-sunken);
+}
+
+:root[data-theme="dark"] .bg-slate-50\/70 {
+  background-color: #020617b3;
+}
+
+:root[data-theme="dark"] .text-slate-900 {
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .text-slate-800 {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .text-slate-700 {
+  color: #e2e8f0;
+}
+
+:root[data-theme="dark"] .text-slate-600 {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .text-slate-500 {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .text-slate-400 {
+  color: var(--text-faint);
+}
+
+:root[data-theme="dark"] .border-slate-100,
+:root[data-theme="dark"] .border-slate-200,
+:root[data-theme="dark"] .divide-slate-100 {
+  border-color: var(--border-subtle);
+}
+
+:root[data-theme="dark"] .border-slate-300 {
+  border-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .border-slate-900 {
+  border-color: var(--text-faint);
+}
+
+:root[data-theme="dark"] .stroke-slate-200 {
+  stroke: var(--border-subtle);
+}
+
+:root[data-theme="dark"] .ring-slate-200,
+:root[data-theme="dark"] .ring-slate-300 {
+  --tw-ring-color: var(--border-strong);
+}
+
+:root[data-theme="dark"] .ring-slate-400 {
+  --tw-ring-color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .text-emerald-700 {
+  color: var(--accent-text);
+}
+
+:root[data-theme="dark"] .text-emerald-800 {
+  color: var(--accent-text-strong);
+}
+
+:root[data-theme="dark"] .text-emerald-900 {
+  color: #a7f3d0;
+}
+
+:root[data-theme="dark"] .bg-emerald-50 {
+  background-color: var(--accent-surface);
+}
+
+:root[data-theme="dark"] .bg-emerald-100 {
+  background-color: var(--accent-surface-strong);
+}
+
+:root[data-theme="dark"] .border-emerald-200 {
+  border-color: #065f46;
+}
+
+:root[data-theme="dark"] .border-emerald-500 {
+  border-color: #10b981;
+}
+
+:root[data-theme="dark"] .ring-emerald-100 {
+  --tw-ring-color: var(--accent-surface-strong);
+}
+
+:root[data-theme="dark"] .text-rose-700 {
+  color: var(--danger-text);
+}
+
+:root[data-theme="dark"] .text-rose-800 {
+  color: #fecdd3;
+}
+
+:root[data-theme="dark"] .text-rose-900 {
+  color: #ffe4e6;
+}
+
+:root[data-theme="dark"] .bg-rose-50 {
+  background-color: var(--danger-surface);
+}
+
+:root[data-theme="dark"] .border-rose-200 {
+  border-color: #881337;
+}
+
+:root[data-theme="dark"] .border-rose-400,
+:root[data-theme="dark"] .border-rose-500 {
+  border-color: #fb7185;
+}
+
+:root[data-theme="dark"] .ring-rose-100 {
+  --tw-ring-color: var(--danger-surface);
+}
+
+:root[data-theme="dark"] .text-amber-700 {
+  color: var(--warning-text);
+}
+
+:root[data-theme="dark"] .text-amber-800 {
+  color: #fcd34d;
+}
+
+:root[data-theme="dark"] .bg-amber-50,
+:root[data-theme="dark"] .bg-amber-100 {
+  background-color: var(--warning-surface);
+}
+
+:root[data-theme="dark"] .border-amber-200 {
+  border-color: #78350f;
 }

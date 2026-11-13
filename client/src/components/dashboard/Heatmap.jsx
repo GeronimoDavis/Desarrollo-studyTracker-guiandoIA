@@ -136,7 +136,7 @@ export function Heatmap({
 
               <div className="flex gap-2">
                 <div
-                  className="flex w-7 shrink-0 flex-col text-[10px] leading-none text-slate-400"
+                  className="flex w-7 shrink-0 flex-col text-[10px] leading-none text-slate-500"
                   style={{ gap: `${CELL_GAP}px` }}
                   aria-hidden="true"
                 >

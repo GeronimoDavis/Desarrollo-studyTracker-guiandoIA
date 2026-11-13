@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -9,6 +9,26 @@
       content="Registro y análisis del tiempo de estudio por materia."
     />
     <title>Seguimiento de Estudio</title>
+    <script>
+      // Aplica el tema guardado antes del primer pintado para evitar el
+      // destello de tema. Si no hay preferencia (o el almacenamiento está
+      // bloqueado) se usa el tema claro.
+      (function () {
+        var theme = 'light';
+
+        try {
+          var stored = window.localStorage.getItem('study-tracker:theme');
+
+          if (stored === 'dark' || stored === 'light') {
+            theme = stored;
+          }
+        } catch (error) {
+          theme = 'light';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

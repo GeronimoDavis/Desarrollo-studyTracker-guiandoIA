@@ -48,7 +48,7 @@ export function SubjectDonut({ report }) {
                   cy="60"
                   r="44"
                   fill="none"
-                  stroke="#E2E8F0"
+                  className="stroke-slate-200"
                   strokeWidth="16"
                 />
                 {segments.map((segment) => (

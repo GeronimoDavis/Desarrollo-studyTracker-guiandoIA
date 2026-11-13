@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import { ThemeToggle } from '../theme/ThemeToggle.jsx';
 import { RecoveryDialog } from '../timer/RecoveryDialog.jsx';
 import { TimerNavigationGuard } from '../timer/TimerNavigationGuard.jsx';
 import { useAuth } from '../../context/useAuth.js';
@@ -55,6 +56,7 @@ export function AppShell() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
+              <ThemeToggle />
               <div className="hidden text-right sm:block">
                 <p className="text-sm font-medium text-slate-900">{user?.name}</p>
                 <p className="text-xs text-slate-500">{user?.email}</p>

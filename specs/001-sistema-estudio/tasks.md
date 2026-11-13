@@ -266,6 +266,9 @@ El motor puro del temporizador (T59–T60) puede avanzar en paralelo con F2/F3. 
 
 **Definition of Done F6:** ajustes completos, seguridad/performance verificadas, documentación final y aceptación del usuario.
 
+**Continuidad:** la spec 002 (`specs/002-tema-oscuro/`, modo oscuro) toma este
+trabajo como base y no modifica ningún requisito de la spec 001.
+
 **Decisión T100 (E2E):** no se incorpora una suite E2E al repositorio porque exigiría
 un runner de navegador y dependencias extra. El flujo crítico se verificó con un
 gate en navegador headless (Edge vía CDP: dashboard, reportes, temporizador y

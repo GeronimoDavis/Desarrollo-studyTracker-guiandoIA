@@ -114,6 +114,23 @@ npm --prefix server run seed -- --email=ana@example.com --days=60
 
 El script elimina las sesiones y materias previas de ese usuario antes de sembrar.
 
+## Tema claro y oscuro
+
+La app tiene dos temas: **claro** y **oscuro**. El control está en el encabezado
+(al lado de "Cerrar sesión"), tanto en escritorio como en móvil.
+
+- La preferencia se guarda en el navegador (`localStorage`, clave
+  `study-tracker:theme`) y se aplica **antes del primer pintado**, por eso no
+  hay destello al recargar.
+- Es **por dispositivo**: no se sincroniza entre equipos ni navegadores.
+- El tema oscuro se define en `client/src/index.css` con un mapa de clases
+  (superficie, texto, borde y acento); el heatmap y la dona llevan su propia
+  variante.
+- Si el navegador no permite `localStorage` (modo privado), la app funciona
+  igual en tema claro.
+
+Detalle completo en [`specs/002-tema-oscuro/spec.md`](specs/002-tema-oscuro/spec.md).
+
 ## Pruebas
 
 ```bash

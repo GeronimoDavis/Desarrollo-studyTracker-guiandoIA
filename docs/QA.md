@@ -110,6 +110,23 @@ una contraseña actual incorrecta muestra `La contraseña actual no es correcta.
 
 ---
 
+## Tema oscuro (spec 002)
+
+| Comprobación | Resultado |
+| --- | --- |
+| Preferencia guardada en `localStorage` (`study-tracker:theme`) | Se lee y escribe sin excepciones; valor corrupto → tema claro y se corrige |
+| Tema aplicado antes del primer pintado | `data-theme` en `<html>` desde el script inline de `index.html`; sin destello |
+| Valores computados en modo oscuro | fondo `rgb(2, 6, 23)`, tarjeta `rgb(15, 23, 42)`, texto `rgb(248, 250, 252)`, borde `rgb(30, 41, 59)` |
+| Alternancia y persistencia | El toggle alterna, guarda y sobrevive a la recarga; sin errores de consola |
+| Contraste WCAG AA en modo oscuro | **0 textos por debajo del mínimo** en login, dashboard, reportes, temporizador, ajustes, materias y detalle de materia (gate headless que mide el color de cada texto sobre su fondo real) |
+| Auditoría estática de clases | `client/src/themeAudit.test.js` verifica que toda clase de color usada tenga equivalente oscuro en `index.css` (allowlist documentada de acentos y overlays) |
+| Backend, base de datos y API | Sin cambios: la spec 002 es sólo presentación |
+
+Evidencia: capturas por pantalla en modo oscuro y medición de contraste en el
+gate headless (Edge + CDP) con usuario de prueba y datos sembrados.
+
+---
+
 ## Observaciones
 
 1. **Cuarto umbral del heatmap (resuelto).** El backend calcula las cinco bandas

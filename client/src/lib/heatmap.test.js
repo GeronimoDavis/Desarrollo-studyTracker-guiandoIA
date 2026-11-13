@@ -23,6 +23,16 @@ describe('heatmap levels', () => {
     );
   });
 
+  it('expone una variante oscura para cada nivel', () => {
+    for (let level = 0; level <= 4; level += 1) {
+      expect(HEATMAP_LEVEL_CLASSES[level]).toContain('dark:');
+    }
+
+    expect(getHeatmapLevelClass({ level: null, isFuture: true })).toContain(
+      'dark:'
+    );
+  });
+
   it('limita niveles fuera de rango', () => {
     expect(getHeatmapLevelClass({ level: 99, isFuture: false })).toBe(
       HEATMAP_LEVEL_CLASSES[4]
